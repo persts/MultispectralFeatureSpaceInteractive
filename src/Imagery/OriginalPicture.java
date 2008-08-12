@@ -22,7 +22,7 @@ public class OriginalPicture extends JComponent implements java.awt.event.MouseL
 java.awt.event.MouseMotionListener {
 
 	
-	  /*The polygon contains */
+	  /*The polygon that contains the selected area*/
 		private Polygon cvPolygon =new Polygon();
 		
 	  private boolean cvInitialPen        = true;
@@ -37,22 +37,24 @@ java.awt.event.MouseMotionListener {
     private int cvPrevy                 = 0;
     
     
-    
+     
     private boolean cvDragging = false;
     private boolean cvClicking = false;
     
     private ScatterDiagram cvSDiagram;
   
+    /*Matrix with the selected pixels in the original picture*/
     private boolean [][] cvSelectedPixels;
-    
+    /*Matrix with the selected pixels in the Scatter Diagram*/
     private boolean [] [] cvSelectedPixelsSD;
-    
+    /*Object used to populate the XBand and YBand matrixes*/
     private EightBitProvider cvEBP;
-    
+    /*Selected bands*/
     private int cvBandX = 0;
     private int cvBandY = 0;
     
-    //Para saber el valor del pixel seleccionado en el scatter diagram
+    /*Boolean that indicates whether there are selected pixels in the 
+     * scatter diagram or not*/
     private boolean cvSelectedPixel = false;
     
 
@@ -259,13 +261,14 @@ java.awt.event.MouseMotionListener {
   				pictureBandX[lvRowRunner][lvColumnRunner]=cvEBP.getInt(cvBandX,lvRowRunner,lvColumnRunner);
   				pictureBandY[lvRowRunner][lvColumnRunner]=cvEBP.getInt(cvBandY,lvRowRunner,lvColumnRunner);
   				//Filling in every pixel: Red is BandX and Green is BandY
+  				/*We just draw the two bands*/
   				if(cvSelectedPixel == false )
-  				pixels[i++]=(pictureBandX[lvRowRunner][lvColumnRunner])<<24 | (pictureBandY[lvRowRunner][lvColumnRunner]) << 16 | (0 << 8) | 255;
+  				  pixels[i++]=(pictureBandX[lvRowRunner][lvColumnRunner])<<24 | (pictureBandY[lvRowRunner][lvColumnRunner]) << 16 | (0 << 8) | 255;
   				else
   				{
+  					/*If there are selected pixels in the scatter diagram, we draw the with the highest Alpha Value
+  					 * and the not selected ones with a very low value*/
   					int lvPixelValue = (pictureBandX[lvRowRunner][lvColumnRunner])<<24 | (pictureBandY[lvRowRunner][lvColumnRunner]) << 16 | (0 << 8) | 255;
-  					
-  					
   					pixels[i++]= cvSelectedPixelsSD[pictureBandX[lvRowRunner][lvColumnRunner]][pictureBandY[lvRowRunner][lvColumnRunner]]? lvPixelValue : (pictureBandX[lvRowRunner][lvColumnRunner])<<24 | (pictureBandY[lvRowRunner][lvColumnRunner]) << 16 | (0 << 8) | 30;
   				}
   			}	
@@ -281,7 +284,7 @@ java.awt.event.MouseMotionListener {
     	g2.drawImage(image,0,0,this);
     	//Drawing the polygon the user drew.
     	g2.drawPolygon(this.cvPolygon);
-    	//Drawing the last two points
+    	//Drawing the clicked point in case we are in the clicking mode
     	if(cvClicking && cvPolygon.npoints>0)
     	{
    		 g.setColor(Color.CYAN);
@@ -294,8 +297,6 @@ java.awt.event.MouseMotionListener {
     	this.cvSDiagram.resetScatterDiagramPixelsValues();
     	this.cvSDiagram.setScatterDiagramPixelsValues();
     	//updating the image
-    	
-
     	this.cvSDiagram.repaint();
     }
 

@@ -15,6 +15,8 @@ java.awt.event.MouseMotionListener{
 	  *3 -> Parallelepiped
 	  */
   private int cvAlgorithm = 1;
+  
+  /**/
 	private int cvRadium;
 	 
 	private Polygon cvPolygon =new Polygon();

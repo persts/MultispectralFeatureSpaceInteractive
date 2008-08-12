@@ -170,15 +170,15 @@ public class Frame extends JFrame
  		cvJRadioButtonPS.addActionListener(new Frame_jRadioButtonPS_ActionAdapter(this));
  		cvJRadioButtonDrag.addActionListener(new Frame_jRadioButtonDrag_ActionAdapter(this));
  	  cvJRadioButtonParallel.addActionListener(new Frame_jRadioButtonParallel_ActionAdapter(this));
- 		
- 	  cvJRadioButtonMinDist.addActionListener(new Frame_jRadioButtonMinDist_ActionAdapter(this));
+ 		cvJRadioButtonMinDist.addActionListener(new Frame_jRadioButtonMinDist_ActionAdapter(this));
   	cvJRadioButtonMaxLike.addActionListener(new Frame_jRadioButtonMaxLike_ActionAdapter(this));
  	  
  		
  		cvJPanelXSelection.add(cvJComboBoxX);
  		
  		cvJPanelYSelection.add(cvJComboBoxY);
- 		
+ 		/*!!!!!Let's change the layout and hopefully it will work on ned's computer!!!!!!*/
+ 		cvJPanelSelectMethod.setLayout(new GridLayout());
  		cvJPanelSelectMethod.add(cvJRadioButtonPS);
  		cvJPanelSelectMethod.add(cvJRadioButtonDrag);
  		cvJPanelSelectMethod.setBorder(new TitledBorder("Selection method"));
