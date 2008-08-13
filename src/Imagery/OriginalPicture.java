@@ -52,7 +52,9 @@ java.awt.event.MouseMotionListener {
     /*Selected bands*/
     private int cvBandX = 0;
     private int cvBandY = 0;
-    
+    private int cvRedBand = 0;
+    private int cvGreenBand = 0;
+    private int cvBlueBand = 0;
     /*Boolean that indicates whether there are selected pixels in the 
      * scatter diagram or not*/
     private boolean cvSelectedPixel = false;
@@ -109,6 +111,21 @@ java.awt.event.MouseMotionListener {
     public void setBandY(int theBand)
     {
     	cvBandY=theBand;
+    }
+    
+    public void setRedBand(int theBand)
+    {
+    	cvRedBand = theBand;
+    }
+    
+    public void setGreenBand(int theBand)
+    {
+    	cvGreenBand = theBand;
+    }
+    
+    public void setBlueBand(int theBand)
+    {
+    	cvBlueBand = theBand;
     }
     
     public void setSelectedPixels()
@@ -263,7 +280,9 @@ java.awt.event.MouseMotionListener {
   				//Filling in every pixel: Red is BandX and Green is BandY
   				/*We just draw the two bands*/
   				if(cvSelectedPixel == false )
-  				  pixels[i++]=(pictureBandX[lvRowRunner][lvColumnRunner])<<24 | (pictureBandY[lvRowRunner][lvColumnRunner]) << 16 | (0 << 8) | 255;
+  				{
+  				  pixels[i++]=(cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 255;
+  				}
   				else
   				{
   					/*If there are selected pixels in the scatter diagram, we draw the with the highest Alpha Value

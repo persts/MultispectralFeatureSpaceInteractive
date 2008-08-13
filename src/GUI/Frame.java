@@ -11,7 +11,7 @@ import javax.swing.event.ChangeListener;
 import Imagery.*;
 
 
-public class Frame extends JFrame 
+public class Frame extends JFrame implements ActionListener 
 {
 	
 	String cvXAxis[];
@@ -38,6 +38,9 @@ public class Frame extends JFrame
  	JRadioButton cvJRadioButtonParallel= new JRadioButton(); 
  	JComboBox cvJComboBoxX; 
  	JComboBox cvJComboBoxY;
+ 	JComboBox cvRedComboBox;
+ 	JComboBox cvGreenComboBox;
+ 	JComboBox cvBlueComboBox;
  	
  	JPanel cvJPanelXSelection = new JPanel();
  	JPanel cvJPanelYSelection = new JPanel();
@@ -91,6 +94,29 @@ public class Frame extends JFrame
   	cvYAxis=cvOpic.getBands();
   	cvJComboBoxX= new JComboBox(cvXAxis); 
    	cvJComboBoxY= new JComboBox(cvYAxis);
+   	
+   	//Add Band selections to the frame
+   	//PJE: Trying to keep your basic layout method the same 
+   	//but setting all these bounds is a bit ugly.
+   	JPanel lvBandSelection = new JPanel();
+   	lvBandSelection.setLayout(new GridLayout(3,2));
+   	lvBandSelection.setBackground(Color.white);
+   	lvBandSelection.setBorder(new TitledBorder("Band Selection"));
+   	lvBandSelection.setBounds(575, 50, 200, 100);
+   	lvBandSelection.add(new JLabel("Red"));
+   	cvRedComboBox = new JComboBox(cvXAxis);
+   	cvRedComboBox.addActionListener(this);
+   	lvBandSelection.add(cvRedComboBox);
+   	lvBandSelection.add(new JLabel("Green"));
+   	cvGreenComboBox = new JComboBox(cvXAxis);
+   	cvGreenComboBox.addActionListener(this);
+   	lvBandSelection.add(cvGreenComboBox);
+   	lvBandSelection.add(new JLabel("Blue"));
+   	cvBlueComboBox = new JComboBox(cvXAxis);
+   	cvBlueComboBox.addActionListener(this);
+   	lvBandSelection.add(cvBlueComboBox);
+   	cvJPanel2.add(lvBandSelection);
+   	
   	//Painting the original picture
   	cvJPanel2.add(cvOpic);
   	cvOpic.setBounds(300, 50, 256, 256);
@@ -221,6 +247,26 @@ public class Frame extends JFrame
     cvJComboBoxY.addItemListener (new Frame_jComboBoxY_mouseAdapter(this));
   }
 
+  //PJE: Implementing the actionlistener in the class can greatly simplify things
+  //If you have more than one or two lines of code make a function call
+  public void actionPerformed(ActionEvent evt) {
+      Object obj = evt.getSource();
+      if(obj == cvRedComboBox) 
+      {
+    	this.cvOpic.setRedBand(cvRedComboBox.getSelectedIndex());
+	  	this.cvOpic.repaint();
+      }
+      else if(obj == cvGreenComboBox) 
+      {
+    	this.cvOpic.setGreenBand(cvGreenComboBox.getSelectedIndex());
+  	  	this.cvOpic.repaint();
+      }
+      else if(obj == cvBlueComboBox) 
+      {
+    	this.cvOpic.setBlueBand(cvBlueComboBox.getSelectedIndex());
+  	  	this.cvOpic.repaint();
+      }
+  }
 
   public void jMenuFileExit_actionPerformed(ActionEvent e) 
   {
