@@ -42,14 +42,14 @@ public class FrameAbout extends JDialog implements ActionListener {
   }
 
   /**
-   * Inicialización de componentes
+   * Inicializaciï¿½n de componentes
    * @throws java.lang.Exception
    */
 
   private void jbInit() throws Exception  {
     //image1 = new ImageIcon(GUI.Frame.class.getResource("../Imagenes/uclm.jpg"));
     //imageLabel.setIcon(image1);
-    this.setTitle("Acerca de");
+    this.setTitle("About Space Interactive Tool");
     panel1.setLayout(borderLayout1);
     panel2.setLayout(borderLayout2);
     insetsPanel1.setLayout(flowLayout1);
@@ -63,7 +63,7 @@ public class FrameAbout extends JDialog implements ActionListener {
     label4.setText(comments);
     insetsPanel3.setLayout(gridLayout1);
     insetsPanel3.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 10));
-    button1.setText("Aceptar");
+    button1.setText("OK");
     button1.addActionListener(this);
     insetsPanel2.add(imageLabel, null);
     panel2.add(insetsPanel2, BorderLayout.WEST);
@@ -92,7 +92,7 @@ public class FrameAbout extends JDialog implements ActionListener {
   }
 
   /**
-   * Cerrar el cuadro de diálogo
+   * Cerrar el cuadro de diï¿½logo
    */
 
   void cancel() {
@@ -100,7 +100,7 @@ public class FrameAbout extends JDialog implements ActionListener {
   }
 
   /**
-   * Cerrar el cuadro de diálogo tras un suceso de un botón
+   * Cerrar el cuadro de diï¿½logo tras un suceso de un botï¿½n
    * @param e
    */
 
