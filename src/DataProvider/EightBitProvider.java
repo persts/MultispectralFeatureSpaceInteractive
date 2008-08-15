@@ -1,4 +1,7 @@
 package DataProvider;
+import java.io.*;
+import java.util.*;
+
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
 import java.io.FileOutputStream;
@@ -33,9 +36,18 @@ public class EightBitProvider {
 	 */
 	public boolean read(String theInputFile)
 	{
+		InputStream is = null;
+		
 		try
 		{
-			DataInputStream lvInputStream = new DataInputStream(new FileInputStream(theInputFile));
+			is = EightBitProvider.class.getResourceAsStream(theInputFile);
+			DataInputStream lvInputStream = new DataInputStream(new DataInputStream(is));
+		      
+		         
+			
+			
+			
+			//DataInputStream lvInputStream = new DataInputStream(new FileInputStream(theInputFile));
 			int lvNumberOfBands = lvInputStream.readInt();
 			int lvNumberOfRows = lvInputStream.readInt();
 			int lvNumberOfColumns = lvInputStream.readInt();
