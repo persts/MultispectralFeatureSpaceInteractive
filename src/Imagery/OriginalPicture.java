@@ -183,6 +183,18 @@ java.awt.event.MouseMotionListener {
       	 cvSelectedPixel=false;
       	 repaint();
     	 }
+    	 else if (cvDragging)
+    	 {
+    		 if(e.getClickCount() == 2)
+    		 {
+    			 setSelectedPixels();
+    			 for(int i=0; i< this.getHeight();i++)
+    		    		for(int j=0; j< this.getWidth();j++)
+    		    			cvSelectedPixels[i][j]=true;
+    	      	 cvSDiagram.setSelectedPixels(this.cvSelectedPixels); 
+    	      	repaint();
+    		 }
+    	 }
  
     }
 
@@ -283,10 +295,12 @@ java.awt.event.MouseMotionListener {
   				{
   				  pixels[i++]=(cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 255;
   				}
-  				else
+  				else 
   				{
   					/*If there are selected pixels in the scatter diagram, we draw the with the highest Alpha Value
   					 * and the not selected ones with a very low value*/
+  					
+  					
   					int lvPixelValue=(cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 255;
   					pixels[i++] = cvSelectedPixelsSD[pictureBandX[lvRowRunner][lvColumnRunner]][pictureBandY[lvRowRunner][lvColumnRunner]]? lvPixelValue : (cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 30;
   					
@@ -310,9 +324,23 @@ java.awt.event.MouseMotionListener {
     	if(cvClicking && cvPolygon.npoints>0)
     	{
    		 g.setColor(Color.CYAN);
-   		 for (int cont=0; cont<cvPolygon.npoints; cont++)
-   			 g.fillOval(this.cvPolygon.xpoints[cont]-2, this.cvPolygon.ypoints[cont]-2, 4, 4);
+   		 //for (int cont=0; cont<cvPolygon.npoints; cont++)
+   			 g.fillOval(this.cvPolygon.xpoints[0]-2, this.cvPolygon.ypoints[0]-2, 4, 4);
     	}
+    	if( cvSelectedPixel && cvClicking)
+    	{
+    		g.setColor(new Color(255,215,0));
+    		for (int lvRows=0; lvRows<cvEBP.cvData[0].length;lvRows++)
+    			for (int lvColumns=0; lvColumns<cvEBP.cvData[0][0].length;lvColumns++)
+    			{
+    				if(cvSelectedPixelsSD[pictureBandX[lvRows][lvColumns]][pictureBandY[lvRows][lvColumns]])
+    				{
+    					g.fillOval(lvColumns-2,  lvRows-2, 4, 4);
+    				}
+    			}
+    			
+    	}
+    	
     	//Setting up the Scatter diagram,  with the two bands
     	this.cvSDiagram.setPictureBandX(pictureBandX);
     	this.cvSDiagram.setPictureBandY(pictureBandY);
