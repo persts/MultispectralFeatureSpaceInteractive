@@ -105,6 +105,14 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
 	  	cvYAxis=this.cvOpic.getBands();
 	  	cvJComboBoxX= new JComboBox(cvXAxis); 
 	   	cvJComboBoxY= new JComboBox(cvYAxis);
+	   	if(cvYAxis.length>1)
+	   	{
+	   		cvJComboBoxY.setSelectedIndex(1);
+	   		this.cvSDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
+	   	  	this.cvOpic.setBandY(cvJComboBoxY.getSelectedIndex());
+	   	  	
+	   	}
+	   	
 	   	
 	    GridLayout gridLayout1 = new GridLayout();
 	   	

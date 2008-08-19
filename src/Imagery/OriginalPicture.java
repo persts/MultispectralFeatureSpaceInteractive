@@ -10,7 +10,6 @@ import java.awt.image.DirectColorModel;
 
 import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
-import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
