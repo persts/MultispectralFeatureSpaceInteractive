@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 import DataProvider.EightBitProvider;
-
+import javax.swing.*;
 
 
 public class OriginalPicture extends JComponent implements java.awt.event.MouseListener,
@@ -58,14 +58,15 @@ java.awt.event.MouseMotionListener {
     /*Boolean that indicates whether there are selected pixels in the 
      * scatter diagram or not*/
     private boolean cvSelectedPixel = false;
+    JCheckBox cvJCheckWholePicture;
     
-
-    public  OriginalPicture(ScatterDiagram theDiagram)
+    public  OriginalPicture(ScatterDiagram theDiagram, JCheckBox theCheck)
     {
     	 this.addMouseListener(this);
        this.addMouseMotionListener(this);
        
        this.cvSDiagram = theDiagram;
+       cvJCheckWholePicture = theCheck;
        cvEBP = new EightBitProvider();
    		 cvEBP.read("7band_256x256_example.dat");
     }
@@ -126,6 +127,21 @@ java.awt.event.MouseMotionListener {
     public void setBlueBand(int theBand)
     {
     	cvBlueBand = theBand;
+    }
+    
+    public int getRedBand()
+    {
+    	return cvRedBand ;
+    }
+    
+    public int getGreenBand()
+    {
+    	return cvGreenBand;
+    }
+    
+    public int getBlueBand()
+    {
+    	return cvBlueBand;
     }
     
     public void setSelectedPixels()
@@ -230,6 +246,7 @@ java.awt.event.MouseMotionListener {
      	  this.cvSDiagram.resetScatterDiagramPixelsValues();
      	  this.cvSDiagram.setScatterDiagramPixelsValues();
      	 	cvSDiagram.repaint();
+     	 	cvJCheckWholePicture.setSelected(false);
      	}	
     }
 
@@ -329,12 +346,15 @@ java.awt.event.MouseMotionListener {
     	}
     	if( cvSelectedPixel && cvClicking)
     	{
-    		g.setColor(new Color(255,215,0));
+    		
+    		
     		for (int lvRows=0; lvRows<cvEBP.cvData[0].length;lvRows++)
     			for (int lvColumns=0; lvColumns<cvEBP.cvData[0][0].length;lvColumns++)
     			{
     				if(cvSelectedPixelsSD[pictureBandX[lvRows][lvColumns]][pictureBandY[lvRows][lvColumns]])
     				{
+    					g.setColor(new Color((cvEBP.getInt(cvRedBand,lvRows,lvColumns)) , (cvEBP.getInt(cvGreenBand,lvRows,lvColumns))  , ((cvEBP.getInt(cvBlueBand,lvRows,lvColumns)) )));  //255,215,0 good yellow
+    		    		
     					g.fillOval(lvColumns-2,  lvRows-2, 4, 4);
     				}
     			}

@@ -8,21 +8,13 @@ import javax.swing.border.*;
 
 
 
-public class FrameAxisSelection extends JDialog implements ActionListener, ItemListener {
+public class FrameAxisSelection extends JDialog implements ActionListener {
 	
 	Frame parent;
-	
 	String cvXAxis[];
-	String cvYAxis[];
-	
-	//
- 	JComboBox cvJComboBoxX; 
- 	//
- 	JComboBox cvJComboBoxY;
- 	//
- 	JPanel cvJPanelXSelection = new JPanel();
- 	//
- 	JPanel cvJPanelYSelection = new JPanel();
+	JComboBox cvRedComboBox;
+ 	JComboBox cvGreenComboBox;
+ 	JComboBox cvBlueComboBox;
 
   JPanel panel1 = new JPanel();
   JPanel panel2 = new JPanel();
@@ -60,55 +52,53 @@ public class FrameAxisSelection extends JDialog implements ActionListener, ItemL
    */
 
   private void jbInit() throws Exception  {
-	  
-	  //
-	  	//We have to show the bands in the combo boxes
-	  	cvXAxis=parent.cvOpic.getBands();
-	  	cvYAxis=parent.cvOpic.getBands();
-	  	cvJComboBoxX= new JComboBox(cvXAxis); 
-	   	cvJComboBoxY= new JComboBox(cvYAxis);
-	   	
-	   	
-	   	
-	    //
-	    cvJPanelXSelection.setLayout(gridLayout1);
-	    cvJPanelXSelection.setPreferredSize(new Dimension(150,50));
-	    cvJPanelXSelection.setBorder(new TitledBorder("X axis band selection"));
-	    //
-	   cvJPanelYSelection.setLayout(gridLayout1);
-	   cvJPanelYSelection.setPreferredSize(new Dimension(150,50));
-	    cvJPanelYSelection.setBorder(new TitledBorder("Y axis band selection"));
-	    
-	    //
- 		cvJPanelXSelection.add(cvJComboBoxX);
- 		//
- 		cvJPanelYSelection.add(cvJComboBoxY);
- 		
- 		
- 		//cvJPanelXSelection.setBackground(Color.white);
-    //cvJPanelYSelection.setBackground(Color.white);
-    
-    
-    //
-    cvJComboBoxX.addItemListener(this);
-    cvJComboBoxY.addItemListener (this);
+
+ 
     this.setTitle("Select band for each axis");
-    panel1.setLayout(borderLayout1);
+    panel1.setLayout(flowLayout1);
     insetsPanel1.setLayout(flowLayout1);
+    JPanel lvBandSelection = new JPanel();
+   	lvBandSelection.setLayout(new GridLayout(3,2));
+   	
+   	lvBandSelection.setBorder(new TitledBorder("Band Selection"));
+   	lvBandSelection.setBounds(575, 50, 200, 100);
+   	lvBandSelection.add(new JLabel("Red"));
+   	
+   	cvXAxis=parent.cvOpic.getBands();
+   	
+   	///
+   	cvRedComboBox = new JComboBox(parent.cvXAxis);
+   	cvGreenComboBox = new JComboBox(parent.cvXAxis);
+   	cvBlueComboBox = new JComboBox(parent.cvXAxis);
     
+   	cvRedComboBox.addActionListener(this); //////////////////////////
+   	///
+   	lvBandSelection.add(cvRedComboBox);
+   	lvBandSelection.add(new JLabel("Green"));
+   	
+   	cvGreenComboBox.addActionListener(this);
+   	lvBandSelection.add(cvGreenComboBox);
+   	lvBandSelection.add(new JLabel("Blue"));
+   	
+   	cvBlueComboBox.addActionListener(this);
+   	lvBandSelection.add(cvBlueComboBox);
+   	insetsPanel1.add(lvBandSelection,null);
     
     button1.setText("OK");
     button1.addActionListener(this);
    
     this.getContentPane().add(panel1, null);
-    insetsPanel1.add(cvJPanelXSelection);
-    insetsPanel1.add(cvJPanelYSelection);
-    insetsPanel1.add(button1, null);
+
+    insetsPanel1.add(button1,null);
     panel1.add(insetsPanel1, BorderLayout.SOUTH);
     
     
     
     setResizable(true);
+    
+    cvRedComboBox.setSelectedIndex(parent.cvOpic.getRedBand());
+    cvGreenComboBox.setSelectedIndex(parent.cvOpic.getGreenBand());
+    cvBlueComboBox.setSelectedIndex(parent.cvOpic.getBlueBand());
   }
 
   /**
@@ -137,37 +127,30 @@ public class FrameAxisSelection extends JDialog implements ActionListener, ItemL
    */
 
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == button1) {
-      cancel();
-    }
-  }
-  
-  public void itemStateChanged(ItemEvent e)
-  {
 	  Object obj = e.getSource();
-	  
-	  if(obj == cvJComboBoxX)
-	  {
-		  jComboBoxX_mouseClicked( e);
-	  }
-	  else if(obj == cvJComboBoxY)
-	  {
-		  jComboBoxY_mouseClicked(e);
-	  }
+    if (e.getSource() == button1) {
+      cancel();  
+    }
+    else if(obj == cvRedComboBox) 
+    {
+    	parent.cvOpic.setRedBand(cvRedComboBox.getSelectedIndex());
+    	parent.cvOpic.repaint();
+    	
+    }
+    else if(obj == cvGreenComboBox) 
+    {
+       parent.cvOpic.setGreenBand(cvGreenComboBox.getSelectedIndex());
+       parent.cvOpic.repaint();
+       
+    }
+    else if(obj == cvBlueComboBox) 
+    {
+       parent.cvOpic.setBlueBand(cvBlueComboBox.getSelectedIndex());
+      parent.cvOpic.repaint();
+      
+    }
+    
   }
   
-  //
-  void jComboBoxX_mouseClicked(ItemEvent e) 
-  {
-  	this.parent.cvSDiagram.setBandX(cvJComboBoxX.getSelectedIndex());
-  	this.parent.cvOpic.setBandX(cvJComboBoxX.getSelectedIndex());
-  	this.parent.cvOpic.repaint();
-  }
-  //
-  void jComboBoxY_mouseClicked(ItemEvent e) 
-  {  
-  	this.parent.cvSDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
-  	this.parent.cvOpic.setBandY(cvJComboBoxY.getSelectedIndex());
-  	this.parent.cvOpic.repaint();
-  }
+
 }

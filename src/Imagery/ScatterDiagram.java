@@ -18,7 +18,8 @@ java.awt.event.MouseMotionListener{
   
   /**/
 	private int cvRadium;
-	 
+	private int cvRectangleSize; 
+	
 	private Polygon cvPolygon =new Polygon();
 	  
    /* Current mouse coordinates */
@@ -52,7 +53,7 @@ java.awt.event.MouseMotionListener{
 	private boolean cvDragging;
 	
 	private OriginalPicture cvOPic;
-	
+	private boolean cvClassify = false;
 	
 	
   public  ScatterDiagram()
@@ -75,6 +76,10 @@ java.awt.event.MouseMotionListener{
     this.cvOPic = thePicture;
    }
     
+   public void setClassify(boolean theValue)
+   {
+	   this.cvClassify = theValue;
+   }
     public void setClicking()
     {
     	this.cvClicking = true;
@@ -124,6 +129,11 @@ java.awt.event.MouseMotionListener{
     public void setHeight(int theHeight)
     {
     	this.cvHeight= theHeight;
+    }
+    
+    public void setRectangleSize(int theSize)
+    {
+    	this.cvRectangleSize = theSize;
     }
     
     public void setSelectedPixels(boolean theSelectedPixels[][])
@@ -201,10 +211,10 @@ java.awt.event.MouseMotionListener{
     	//Outer rectangle      
       g2.drawRect(15,0,255,255);
       g2.drawString("0",15,270);
-      g2.drawString("255",254,270);
+      g2.drawString("255",248,270);
       //Y Axis
       g2.rotate(Math.PI/-2.0);
-      g2.drawString("255",-20,12);
+      g2.drawString("255",-25,12);
       g2.drawString("0",-254,12);
       //X Axis
       g2.rotate(Math.PI/2.0);
@@ -259,15 +269,17 @@ java.awt.event.MouseMotionListener{
       
       lvMeanX= lvMeanX/lvNPoints;
 			lvMeanY= lvMeanY/lvNPoints;
-			
+	if(cvClassify)	
       switch(cvAlgorithm){
       case 1: /*Minimum Distance */
       {
       	//cvRadium
-      	
+      	if(lvMeanX!=0 && lvMeanY!=0)
+      	{
       	g2.drawOval(lvMeanX+15-cvRadium, 255-lvMeanY-cvRadium, cvRadium*2, cvRadium*2);
       	g2.drawLine(lvMeanX+15-5, 255-lvMeanY, lvMeanX+20, 255-lvMeanY);
       	g2.drawLine(lvMeanX+15, 255-lvMeanY-5, lvMeanX+15, 255-lvMeanY+5);
+      	}
       	
       }
       break;
@@ -279,7 +291,7 @@ java.awt.event.MouseMotionListener{
       break;
       case 3: /* Parallelepiped */
       {
-      	g2.drawRect(cvPictureBandXMin+15, 255-cvPictureBandYMax, cvPictureBandXMax-cvPictureBandXMin, cvPictureBandYMax-cvPictureBandYMin);
+      	g2.drawRect(cvPictureBandXMin+15 - cvRectangleSize, (255-cvPictureBandYMax) - cvRectangleSize, cvPictureBandXMax-cvPictureBandXMin + cvRectangleSize*2, cvPictureBandYMax-cvPictureBandYMin + cvRectangleSize*2);
       	
       	
       }
