@@ -36,21 +36,19 @@ public class EightBitProvider {
 	 */
 	public boolean read(String theInputFile)
 	{
-		InputStream is = null;
-		
+		InputStream lvInputStream = null;
 		try
 		{
-			is = EightBitProvider.class.getResourceAsStream(theInputFile);
-			DataInputStream lvInputStream = new DataInputStream(new DataInputStream(is));
-		      
-		         
-			
-			
-			
+			lvInputStream = this.getClass().getClassLoader().getResourceAsStream(theInputFile);
+			if(lvInputStream == null)
+			{
+			  return false;
+			}
+			DataInputStream lvInputDataStream = new DataInputStream(new DataInputStream(lvInputStream));
 			//DataInputStream lvInputStream = new DataInputStream(new FileInputStream(theInputFile));
-			int lvNumberOfBands = lvInputStream.readInt();
-			int lvNumberOfRows = lvInputStream.readInt();
-			int lvNumberOfColumns = lvInputStream.readInt();
+			int lvNumberOfBands = lvInputDataStream.readInt();
+			int lvNumberOfRows = lvInputDataStream.readInt();
+			int lvNumberOfColumns = lvInputDataStream.readInt();
 
 		    if(lvNumberOfBands <= 0 || lvNumberOfRows <= 0 || lvNumberOfColumns <= 0)
 		    {
@@ -65,7 +63,7 @@ public class EightBitProvider {
 				{
 					for(int lvColumnRunner = 0; lvColumnRunner < cvData[0][0].length; lvColumnRunner++)
 					{
-						cvData[lvBandRunner][lvRowRunner][lvColumnRunner] = lvInputStream.readByte();
+						cvData[lvBandRunner][lvRowRunner][lvColumnRunner] = lvInputDataStream.readByte();
 					}
 				}
 			}

@@ -67,7 +67,10 @@ java.awt.event.MouseMotionListener {
        this.cvSDiagram = theDiagram;
        cvJCheckWholePicture = theCheck;
        cvEBP = new EightBitProvider();
-   		 cvEBP.read("7band_256x256_example.dat");
+       //TODO: This needs to check to see if the read was successful, if not it should set a flag indicating
+       //that the class data is not valid. All function should check this flag to make sure they have valid
+       //data to work with. This will prevent NullPointerExceptions
+   	   cvEBP.read("7band_256x256_example.dat");
     }
 
  
