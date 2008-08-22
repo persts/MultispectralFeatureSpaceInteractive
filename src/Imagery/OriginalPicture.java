@@ -56,7 +56,9 @@ java.awt.event.MouseMotionListener {
     private int cvBlueBand = 0;
     /*Boolean that indicates whether there are selected pixels in the 
      * scatter diagram or not*/
-    private boolean cvSelectedPixel = false;
+    public  boolean cvSelectedPixel = false;
+    
+    private boolean cvDataReady;
     JCheckBox cvJCheckWholePicture;
     
     public  OriginalPicture(ScatterDiagram theDiagram, JCheckBox theCheck)
@@ -70,7 +72,7 @@ java.awt.event.MouseMotionListener {
        //TODO: This needs to check to see if the read was successful, if not it should set a flag indicating
        //that the class data is not valid. All function should check this flag to make sure they have valid
        //data to work with. This will prevent NullPointerExceptions
-   	   cvEBP.read("7band_256x256_example.dat");
+       cvDataReady = cvEBP.read("7band_256x256_example.dat");
     }
 
  
@@ -92,10 +94,20 @@ java.awt.event.MouseMotionListener {
     
     public  String [] getBands()
     {
-    	String lvBands[] =new String[cvEBP.cvData.length];
+    	String lvBands[];
+    	if(cvDataReady)
+    	{
+    	 lvBands =new String[cvEBP.cvData.length];
     	for(int i=1; i<=lvBands.length;i++)
     		lvBands[i-1]="Band "+Integer.toString(i);
     	
+    	
+    	}
+    	else
+    	{
+    		lvBands =new String[1];
+    		lvBands[0] = "No data";
+    	}
     	return lvBands;
     }
     
@@ -301,7 +313,8 @@ java.awt.event.MouseMotionListener {
 
     	//Fill in the array pixel
     	int i = 0;
-    	
+    	if (cvDataReady)
+    	{
     	for(int lvRowRunner = 0; lvRowRunner < cvEBP.cvData[0].length; lvRowRunner++) 
   		{
   			for(int lvColumnRunner = 0; lvColumnRunner < cvEBP.cvData[0][0].length; lvColumnRunner++)
@@ -320,15 +333,21 @@ java.awt.event.MouseMotionListener {
   					 * and the not selected ones with a very low value*/
   					
   					
+  					//int lvPixelValue=(cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 255;
+  					//pixels[i++] = cvSelectedPixelsSD[pictureBandX[lvRowRunner][lvColumnRunner]][pictureBandY[lvRowRunner][lvColumnRunner]]? lvPixelValue : (cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 30;
+  					
+  					
   					int lvPixelValue=(cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 255;
-  					pixels[i++] = cvSelectedPixelsSD[pictureBandX[lvRowRunner][lvColumnRunner]][pictureBandY[lvRowRunner][lvColumnRunner]]? lvPixelValue : (cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 30;
+  					pixels[i++] = cvSelectedPixelsSD[pictureBandX[lvRowRunner][lvColumnRunner]][pictureBandY[lvRowRunner][lvColumnRunner]]?  255<<24 | 255 << 16 | (0 << 8) | 255  :lvPixelValue;
   					
   					//int lvPixelValue = (pictureBandX[lvRowRunner][lvColumnRunner])<<24 | (pictureBandY[lvRowRunner][lvColumnRunner]) << 16 | (0 << 8) | 255;
   					//pixels[i++]= cvSelectedPixelsSD[pictureBandX[lvRowRunner][lvColumnRunner]][pictureBandY[lvRowRunner][lvColumnRunner]]? lvPixelValue : (pictureBandX[lvRowRunner][lvColumnRunner])<<24 | (pictureBandY[lvRowRunner][lvColumnRunner]) << 16 | (0 << 8) | 30;
   				}
   			}	
   		}
-
+    	}
+    	else
+    		g2.drawString("No data available", 110, 125);
     	
     	// And then, some magical steps which I don't understand
     	sample = colormodel.createCompatibleSampleModel(w, h);
@@ -349,7 +368,7 @@ java.awt.event.MouseMotionListener {
     	if( cvSelectedPixel && cvClicking)
     	{
     		
-    		
+    	   if(cvDataReady)
     		for (int lvRows=0; lvRows<cvEBP.cvData[0].length;lvRows++)
     			for (int lvColumns=0; lvColumns<cvEBP.cvData[0][0].length;lvColumns++)
     			{

@@ -1,11 +1,8 @@
 package DataProvider;
 import java.io.*;
-import java.util.*;
-
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
 import java.io.FileOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class EightBitProvider {

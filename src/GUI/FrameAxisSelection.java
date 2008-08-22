@@ -2,7 +2,6 @@ package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -46,14 +45,8 @@ public class FrameAxisSelection extends JDialog implements ActionListener {
     }
   }
 
-  /**
-   * Inicializaci�n de componentes
-   * @throws java.lang.Exception
-   */
-
-  private void jbInit() throws Exception  {
-
- 
+  private void jbInit() throws Exception  
+  {
     this.setTitle("Select band for each axis");
     panel1.setLayout(flowLayout1);
     insetsPanel1.setLayout(flowLayout1);
@@ -66,13 +59,11 @@ public class FrameAxisSelection extends JDialog implements ActionListener {
    	
    	cvXAxis=parent.cvOpic.getBands();
    	
-   	///
    	cvRedComboBox = new JComboBox(parent.cvXAxis);
    	cvGreenComboBox = new JComboBox(parent.cvXAxis);
    	cvBlueComboBox = new JComboBox(parent.cvXAxis);
     
-   	cvRedComboBox.addActionListener(this); //////////////////////////
-   	///
+   	cvRedComboBox.addActionListener(this); 
    	lvBandSelection.add(cvRedComboBox);
    	lvBandSelection.add(new JLabel("Green"));
    	
@@ -91,20 +82,12 @@ public class FrameAxisSelection extends JDialog implements ActionListener {
 
     insetsPanel1.add(button1,null);
     panel1.add(insetsPanel1, BorderLayout.SOUTH);
-    
-    
-    
     setResizable(true);
     
     cvRedComboBox.setSelectedIndex(parent.cvOpic.getRedBand());
     cvGreenComboBox.setSelectedIndex(parent.cvOpic.getGreenBand());
     cvBlueComboBox.setSelectedIndex(parent.cvOpic.getBlueBand());
   }
-
-  /**
-   * Modificado para poder salir cuando se cierra la ventana
-   * @param e
-   */
 
   protected void processWindowEvent(WindowEvent e) {
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -113,18 +96,9 @@ public class FrameAxisSelection extends JDialog implements ActionListener {
     super.processWindowEvent(e);
   }
 
-  /**
-   * Cerrar el cuadro de di�logo
-   */
-
   void cancel() {
     dispose();
   }
-
-  /**
-   * Cerrar el cuadro de di�logo tras un suceso de un bot�n
-   * @param e
-   */
 
   public void actionPerformed(ActionEvent e) {
 	  Object obj = e.getSource();
@@ -149,8 +123,5 @@ public class FrameAxisSelection extends JDialog implements ActionListener {
       parent.cvOpic.repaint();
       
     }
-    
   }
-  
-
 }
