@@ -7,9 +7,9 @@ import javax.swing.border.*;
 
 
 
-public class FrameAxisSelection extends JDialog implements ActionListener {
+public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener {
 	
-	Frame parent;
+	FsiMainFrame parent;
 	String cvXAxis[];
 	JComboBox cvRedComboBox;
  	JComboBox cvGreenComboBox;
@@ -33,7 +33,7 @@ public class FrameAxisSelection extends JDialog implements ActionListener {
   GridLayout gridLayout1 = new GridLayout();
  
   
-  public FrameAxisSelection(Frame theparent) {
+  public FsiRGBBandSelectionFrame(FsiMainFrame theparent) {
     super(theparent);
     parent = theparent;
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
@@ -59,9 +59,9 @@ public class FrameAxisSelection extends JDialog implements ActionListener {
    	
    	cvXAxis=parent.cvOpic.getBands();
    	
-   	cvRedComboBox = new JComboBox(parent.cvXAxis);
-   	cvGreenComboBox = new JComboBox(parent.cvXAxis);
-   	cvBlueComboBox = new JComboBox(parent.cvXAxis);
+   	cvRedComboBox = new JComboBox(parent.vcBandList);
+   	cvGreenComboBox = new JComboBox(parent.vcBandList);
+   	cvBlueComboBox = new JComboBox(parent.vcBandList);
     
    	cvRedComboBox.addActionListener(this); 
    	lvBandSelection.add(cvRedComboBox);

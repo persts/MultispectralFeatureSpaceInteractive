@@ -1,46 +1,33 @@
 package GUI;
 
-import javax.swing.UIManager;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
+public class GraphicalEnvironment 
+{
 
+  public GraphicalEnvironment() 
+  {
+    FsiMainFrame lvMainFrame = new FsiMainFrame();
 
-public class GraphicalEnvironment {
-  boolean packFrame = false;
-
-  public GraphicalEnvironment() {
-    Frame frame = new Frame();
-    //Validar marcos que tienen tamaños preestablecidos
-    //Empaquetar marcos que cuentan con información de tamaño preferente útil. Ej. de su diseño.
-    if (packFrame) {
-      frame.pack();
-    }
-    else {
-      frame.validate();
-    }
     //Centrar la ventana
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    Dimension frameSize = frame.getSize();
+    Dimension lvMainFrameSize = lvMainFrame.getSize();
     
-    if (frameSize.height > screenSize.height) {
-      frameSize.height = screenSize.height;
+    if (lvMainFrameSize.height > screenSize.height) {
+      lvMainFrameSize.height = screenSize.height;
     }
-    if (frameSize.width > screenSize.width) {
-      frameSize.width = screenSize.width;
+    if (lvMainFrameSize.width > screenSize.width) {
+      lvMainFrameSize.width = screenSize.width;
     }
     
-    frame.setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
-    frame.setVisible(true);
+    //Set the location on the screen, validation, and set visible
+    lvMainFrame.setLocation((screenSize.width - lvMainFrameSize.width) / 2, (screenSize.height - lvMainFrameSize.height) / 2);
+    lvMainFrame.validate();
+    lvMainFrame.setVisible(true);
   }
 
-
   public static void main(String[] args) {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    }
-    catch(Exception e) {
-      e.printStackTrace();
-    }
     new GraphicalEnvironment();
   }
 }

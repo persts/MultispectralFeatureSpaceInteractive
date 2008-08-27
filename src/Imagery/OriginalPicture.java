@@ -65,6 +65,7 @@ java.awt.event.MouseMotionListener {
     {
     	 this.addMouseListener(this);
        this.addMouseMotionListener(this);
+       this.setPreferredSize(new Dimension(256,256));
        
        this.cvSDiagram = theDiagram;
        cvJCheckWholePicture = theCheck;

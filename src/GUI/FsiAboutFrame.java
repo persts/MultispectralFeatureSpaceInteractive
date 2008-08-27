@@ -7,7 +7,7 @@ import javax.swing.border.*;
 
 
 
-public class FrameAbout extends JDialog implements ActionListener {
+public class FsiAboutFrame extends JDialog implements ActionListener {
 
   JPanel panel1 = new JPanel();
   JPanel panel2 = new JPanel();
@@ -30,7 +30,7 @@ public class FrameAbout extends JDialog implements ActionListener {
   String copyright = "Copyright (c)";
   String comments = "Bla bla bla";
   
-  public FrameAbout(Frame parent) {
+  public FsiAboutFrame(FsiMainFrame parent) {
     super(parent);
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
     try {

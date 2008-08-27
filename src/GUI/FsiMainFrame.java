@@ -11,19 +11,13 @@ import javax.swing.event.ChangeListener;
 import Imagery.*;
 
 
-public class Frame extends JFrame implements ActionListener, ChangeListener, ItemListener
+public class FsiMainFrame extends JFrame implements ActionListener, ChangeListener, ItemListener
 {
-	String cvXAxis[];
-  String cvYAxis[];
-    	
+	String vcBandList[];
 	
  	JComboBox cvJComboBoxX; 	
  	JComboBox cvJComboBoxY;
  	
- 	JPanel cvJPanelXSelection = new JPanel();
- 	JPanel cvJPanelYSelection = new JPanel();
-	
-	JPanel cvContentPane;
   JMenuBar cvJMenuBar1 = new JMenuBar();
   JMenu cvJMenuFile = new JMenu();
   JMenuItem cvJMenuFileExit = new JMenuItem();
@@ -31,10 +25,6 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
   JMenu cvJMenuHelp = new JMenu();
   JMenuItem cvJMenuHelpAbout = new JMenuItem();
   JLabel cvStatusBar = new JLabel();
-  JPanel cvJPanel2 = new JPanel();
-  BorderLayout cvBorderLayout1 = new BorderLayout();
-  JPanel cvJPanel1 = new JPanel();
-  GridLayout cvGridLayout1 = new GridLayout();
   JSplitPane cvJSplitPane1 = new JSplitPane();
   TitledBorder cvTitledBorder1;
   JPanel cvJPanel3 = new JPanel();
@@ -46,170 +36,235 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
  	JPanel cvJPanelMinimumDistance = new JPanel();
  	JPanel cvJPanelMaximumLikelihood = new JPanel();
  	JPanel cvJPanelParallelepiped = new JPanel();
- 	JPanel cvJPanelSelectMethod = new JPanel();
  	
  	JSpinner cvJSpinnerDistanceSD = new JSpinner();
  	JSpinner cvJSpinnerDistanceMean = new JSpinner();
  	JSpinner cvJSpinnerRectangleSize = new JSpinner();
- 	JCheckBox cvJCheckBoxWholeImage = new  JCheckBox("Whole Image");
+ 	JCheckBox cvJCheckBoxWholeImage = new  JCheckBox("Plot whole image");
  	JCheckBox cvJCheckBoxClassify = new  JCheckBox("Classify");
  	
- 	ScatterDiagram cvSDiagram= new ScatterDiagram();
-	public OriginalPicture cvOpic= new OriginalPicture(cvSDiagram, cvJCheckBoxWholeImage);
+ 	ScatterDiagram cvScatterDiagram= new ScatterDiagram();
+	public OriginalPicture cvOpic= new OriginalPicture(cvScatterDiagram, cvJCheckBoxWholeImage);
 	
   
   /**
-   * Build the frame
+   * Build the main window
    */
 
-  public Frame() 
+  public FsiMainFrame() 
   {
-    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-    try 
-    {
-      jbInit();
+  	try {
+  		String lvLookAndFeel = UIManager.getSystemLookAndFeelClassName();
+  		//GTK is broken on linux right now so let's default to something else
+  		if(lvLookAndFeel == "com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
+  		{
+  			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+  		}
+  		else //Use the system look and feel
+  		{
+  			UIManager.setLookAndFeel(lvLookAndFeel);
+  		}
+      SwingUtilities.updateComponentTreeUI(this);
     }
-    catch(Exception e) 
-    {
+    catch(Exception e) {
       e.printStackTrace();
     }
-    this.cvSDiagram.setOPicture(this.cvOpic);
+    
+    init();
+    this.cvScatterDiagram.setOPicture(this.cvOpic);
   }
 
   /**
    * Setting up the components
-   * @throws java.lang.Exception
    */
-
-  public ScatterDiagram getScatterDiagram()
+  private void init()
   {
-  	return this.cvSDiagram;
-  }
-  
-  private void jbInit() throws Exception  
-  {
-		//We have to show the bands in the combo boxes
-  	cvXAxis=this.cvOpic.getBands();
-	  cvYAxis=this.cvOpic.getBands();
-	  cvJComboBoxX= new JComboBox(cvXAxis); 
-	  cvJComboBoxY= new JComboBox(cvYAxis);
-	  if(cvYAxis.length>1)
-	  {
-	  	cvJComboBoxY.setSelectedIndex(1);
-	    this.cvSDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
-	    this.cvOpic.setBandY(cvJComboBoxY.getSelectedIndex());  	
-	  }
-	  GridLayout gridLayout1 = new GridLayout();
-	   
-	  cvJPanelXSelection.setLayout(gridLayout1);
-	  cvJPanelXSelection.setPreferredSize(new Dimension(150,50));
-	  cvJPanelXSelection.setBorder(new TitledBorder("X axis band"));
-	  cvJPanelXSelection.setBackground(Color.WHITE);
-	   
-	  cvJPanelYSelection.setLayout(gridLayout1);
-	  cvJPanelYSelection.setPreferredSize(new Dimension(150,50));
-	  cvJPanelYSelection.setBorder(new TitledBorder("Y axis band"));
-	  cvJPanelYSelection.setBackground(Color.WHITE);
-	  
-		cvJPanelXSelection.add(cvJComboBoxX);
-		//
-		cvJPanelYSelection.add(cvJComboBoxY);
-		
-		cvJPanel2.add(cvJPanelXSelection);
-		cvJPanel2.add(cvJPanelYSelection);
-		cvJPanelXSelection.setBounds(45, 325, 100, 50);
-		cvJPanelYSelection.setBounds(145, 325, 100, 50);
-		
-		cvJPanel2.add(cvJCheckBoxWholeImage);
-		cvJCheckBoxWholeImage.setBounds(145, 360, 120, 50); 
-		cvJCheckBoxWholeImage.addItemListener(this);
-		
-		cvJPanel2.add(cvJCheckBoxClassify);
-		cvJCheckBoxClassify.setBounds(45, 360, 100, 50);
-		cvJCheckBoxClassify.addItemListener(this);
-		
-		
-		cvJComboBoxX.setBackground(Color.WHITE);
-		cvJComboBoxY.setBackground(Color.WHITE);
-		cvJComboBoxX.addItemListener(this);
-		cvJComboBoxY.addItemListener (this);
-		 
-		 
-   	//Add Band selections to the frame
-   	//PJE: Trying to keep your basic layout method the same 
-   	//but setting all these bounds is a bit ugly.
-		
-  	//Painting the original picture
-  	cvJPanel2.add(cvOpic);
-  	cvOpic.setBounds(300, 50, 256, 256);
-    cvJPanel2.validate();
-    //painting the scatter diagram
-    cvJPanel2.add(cvSDiagram);
-    cvSDiagram.setBounds(15, 50, 271, 271);
-    cvJPanel2.validate();
-  	
-    cvContentPane = (JPanel) this.getContentPane();
-    cvTitledBorder1 = new TitledBorder("");
-    cvContentPane.setLayout(cvBorderLayout1);
-    this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-    //
-    this.setSize(new Dimension(600, 600)); //747
+  	this.setSize(600, 600);
+  	//Min width is basically the size of the scatter plot and original image
+    this.setMinimumSize(new Dimension(550,550));
+    
     this.setTitle("Feature Space Interactive");
     cvStatusBar.setBorder(BorderFactory.createEtchedBorder());
     cvStatusBar.setText("Not ready yet... ");
+    
     cvJMenuFile.setText("File");
-    cvJMenuFileExit.setText("Exit");
-    cvJMenuFileExit.addActionListener(this);
-    ///
+    
     cvJMenuBandsSelection.setText("Band Selection");
     cvJMenuBandsSelection.addActionListener(this);
+    cvJMenuFile.add(cvJMenuBandsSelection);
+    
+    cvJMenuFileExit.setText("Exit");
+    cvJMenuFileExit.addActionListener(this);
+    cvJMenuFile.add(new JSeparator());
+    cvJMenuFile.add(cvJMenuFileExit);
+    
     cvJMenuHelp.setText("Help");
     cvJMenuHelpAbout.setText("About...");
     cvJMenuHelpAbout.addActionListener(this);
-    cvJPanel1.setBackground(Color.white);
-    cvJPanel1.setDebugGraphicsOptions(0);
     
-    ///my baby dont care...
-    cvJPanel1.setMaximumSize(new Dimension(32767, 32767));
-    cvJPanel1.setVerifyInputWhenFocusTarget(true);
-    cvJPanel1.setLayout(cvGridLayout1);
+
+    cvJMenuHelp.add(cvJMenuHelpAbout);
+    
+    cvJMenuBar1.add(cvJMenuFile);
+    cvJMenuBar1.add(cvJMenuHelp);
+    this.setJMenuBar(cvJMenuBar1);
+  
+    this.getContentPane().add(cvStatusBar, BorderLayout.SOUTH);
+    JPanel lvCenterPanel = new JPanel(); //This panel basically hold of the components
+    this.getContentPane().add(lvCenterPanel,  BorderLayout.CENTER);
+    
+    
+    /*
+     * Start the Layout of the center area
+     */
+    lvCenterPanel.setLayout(new GridBagLayout());
+  	GridBagConstraints lvConstraints = new GridBagConstraints();
+  	lvCenterPanel.setBackground(Color.white);
+    
+  	/*
+  	 * Add the ScatterPlot
+  	 */
+  	lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 2;
+  	lvConstraints.gridheight = 2;
+  	lvConstraints.gridx = 0;
+  	lvConstraints.gridy = 0;
+  	lvCenterPanel.add(cvScatterDiagram, lvConstraints);
+  	
+  	
+  	/*
+  	 * Add the Original Image
+  	 */
+  	lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 2;
+  	lvConstraints.gridheight = 2;
+    lvConstraints.gridx = 2;
+  	lvConstraints.gridy = 0;
+  	lvCenterPanel.add(cvOpic,lvConstraints);
+  	
+  	/*
+  	 * Set up the scatter plot display controls and combo boxes
+  	 */
+  	JPanel lvJPanelXSelection = new JPanel();
+   	JPanel lvJPanelYSelection = new JPanel();
+   	
+		//We have to show the bands in the combo boxes
+  	//TODO: need to make sure cvOpic has real data
+  	vcBandList = this.cvOpic.getBands();
+	  cvJComboBoxX= new JComboBox(vcBandList); 
+	  cvJComboBoxY= new JComboBox(vcBandList);
+	  
+		cvJComboBoxX.setBackground(Color.WHITE);
+		cvJComboBoxY.setBackground(Color.WHITE);
+		
+		cvJComboBoxX.addItemListener(this);
+		cvJComboBoxY.addItemListener (this);
+		
+	  if(this.cvOpic.getBands().length > 2)
+	  {
+	  	cvJComboBoxY.setSelectedIndex(1);
+	    this.cvScatterDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
+	    this.cvOpic.setBandY(cvJComboBoxY.getSelectedIndex());  	
+	  }
+	  
+	  lvJPanelXSelection.setLayout(new BorderLayout());
+	  lvJPanelXSelection.setBorder(new TitledBorder("X axis"));
+	  lvJPanelXSelection.setBackground(Color.WHITE);
+	  
+	  lvJPanelYSelection.setLayout(new BorderLayout());
+	  lvJPanelYSelection.setBorder(new TitledBorder("Y axis"));
+	  lvJPanelYSelection.setBackground(Color.WHITE);
+	  
+		lvJPanelXSelection.add(cvJComboBoxX);
+		lvJPanelYSelection.add(cvJComboBoxY);
+		
+		lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 1;
+  	lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 0;
+  	lvConstraints.gridy = 2;
+  	lvJPanelXSelection.setPreferredSize(new Dimension(cvScatterDiagram.getPreferredSize().width/2, lvJPanelXSelection.getPreferredSize().height));
+  	lvCenterPanel.add(lvJPanelXSelection, lvConstraints);
+  	
+  	lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 1;
+  	lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 1;
+  	lvConstraints.gridy = 2;
+  	lvCenterPanel.add(lvJPanelYSelection, lvConstraints);
+		
+  	/*
+  	 * Selection Method
+  	 */
+  	cvJRadioButtonPS.setText("Point");
+    cvJRadioButtonPS.setBackground(Color.white);
+    
+    cvJRadioButtonDrag.setText("Polygon");
+    cvJRadioButtonDrag.setBackground(Color.white);
+ 		cvJRadioButtonPS.addActionListener(this);
+ 		cvJRadioButtonDrag.addActionListener(this);
+ 		
+    JPanel lvJPanelSelectionMethod = new JPanel();
+    lvJPanelSelectionMethod.setBackground(Color.WHITE);
+    lvJPanelSelectionMethod.setLayout(new GridLayout(2,1));
+    lvJPanelSelectionMethod.setBorder(new TitledBorder("Selection method"));
+    lvJPanelSelectionMethod.add(cvJRadioButtonPS);
+    lvJPanelSelectionMethod.add(cvJRadioButtonDrag);
+    
+    lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 2;
+  	lvConstraints.gridheight = 2;
+		lvConstraints.gridx = 3;
+  	lvConstraints.gridy = 2;
+  	lvCenterPanel.add(lvJPanelSelectionMethod, lvConstraints);
+  	
+  	/*
+  	 * Scatter plot display type
+  	 */
+  	cvJCheckBoxWholeImage.setBackground(Color.white);
+  	cvJCheckBoxWholeImage.addItemListener(this);
+  	lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 1;
+  	lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 0;
+  	lvConstraints.gridy = 3;
+  	lvCenterPanel.add(cvJCheckBoxWholeImage, lvConstraints);
+		
+		
+			cvJCheckBoxClassify.addItemListener(this);
+
+		 /*
+    ///
     
     cvJSplitPane1.setOrientation(JSplitPane.VERTICAL_SPLIT);
     cvJSplitPane1.setBorder(null);
     cvJSplitPane1.setDividerSize(6);
     cvJSplitPane1.setOneTouchExpandable(true);
-    cvJPanel2.setLayout(null);
-    cvJPanel2.setBackground(Color.white);
-    cvJPanel2.addMouseListener(new Frame_jPanel2_mouseAdapter(this));
+    lvJPanelScatterPlotControls.setLayout(null);
+    lvJPanelScatterPlotControls.setBackground(Color.white);
+    lvJPanelScatterPlotControls.addMouseListener(new Frame_jPanel2_mouseAdapter(this));
     
     cvContentPane.setBorder(null);
   
-    cvJMenuFile.add(cvJMenuFileExit);
     
-    cvJMenuFile.add(cvJMenuBandsSelection);
-    //select bands
-    cvJMenuHelp.add(cvJMenuHelpAbout);
-    cvJMenuBar1.add(cvJMenuFile);
-    cvJMenuBar1.add(cvJMenuHelp);
-    this.setJMenuBar(cvJMenuBar1);
-  
-    cvContentPane.add(cvStatusBar, BorderLayout.SOUTH);
-    cvContentPane.add(cvJPanel1,  BorderLayout.CENTER);
+
     cvJPanel1.add(cvJSplitPane1, null);
-    cvJSplitPane1.add(cvJPanel2, JSplitPane.LEFT);
+    cvJSplitPane1.add(lvJPanelScatterPlotControls, JSplitPane.LEFT);
     cvJSplitPane1.add(cvJPanel3, JSplitPane.RIGHT);
    
     cvJSplitPane1.setDividerLocation(400);
-    cvJPanel2.setBorder(BorderFactory.createEtchedBorder());
+    lvJPanelScatterPlotControls.setBorder(BorderFactory.createEtchedBorder());
 
     
     cvJPanel3.setLayout(new GridLayout(2,5)); 
  		
-    cvJRadioButtonPS.setText("Point selection");
-    cvJRadioButtonPS.setBackground(Color.white);
     
-    cvJRadioButtonDrag.setText("Area drawing");
-    cvJRadioButtonDrag.setBackground(Color.white);
     
     cvJRadioButtonMinDist.setText("Minimum distance");
     cvJRadioButtonMaxLike.setText("Maximum likelihood");
@@ -219,16 +274,12 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
  		cvJPanel3.add(cvJRadioButtonMaxLike, 1); 
  		cvJPanel3.add(cvJRadioButtonParallel, 2); 
  		
- 		cvJRadioButtonPS.addActionListener(this);
- 		cvJRadioButtonDrag.addActionListener(this);
+
  	  cvJRadioButtonParallel.addActionListener(this);
  		cvJRadioButtonMinDist.addActionListener(this);
   	cvJRadioButtonMaxLike.addActionListener(this);
   	
- 		cvJPanelSelectMethod.setLayout(new GridLayout());
- 		cvJPanelSelectMethod.add(cvJRadioButtonPS);
- 		cvJPanelSelectMethod.add(cvJRadioButtonDrag);
- 		cvJPanelSelectMethod.setBorder(new TitledBorder("Selection method"));
+ 		
  		
  		cvJPanelMinimumDistance.setLayout(new BorderLayout());
  		cvJPanelMinimumDistance.setBorder(new TitledBorder("Distance from mean"));
@@ -249,12 +300,13 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
  		
     cvJPanelSelectMethod.setBackground(Color.white);
     
-    cvJPanel2.add(cvJPanelSelectMethod);
+    lvJPanelScatterPlotControls.add(cvJPanelSelectMethod);
     cvJPanelSelectMethod.setBounds(305,325,250,53);
    
    	cvJSpinnerDistanceMean.addChangeListener(this);
     cvJSpinnerDistanceSD.addChangeListener(this);
    	cvJSpinnerRectangleSize.addChangeListener(this);
+   	*/
   }
 
   public void actionPerformed(ActionEvent evt) {
@@ -313,6 +365,11 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
 	  }
 	}
   
+  public ScatterDiagram getScatterDiagram()
+  {
+  	return this.cvScatterDiagram;
+  }
+  
   public void itemStateChanged(ItemEvent e)
   {
 	  Object obj = e.getSource();
@@ -339,18 +396,18 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
   {
 	  if(cvJCheckBoxClassify.isSelected())
 	  {
-		  this.cvSDiagram.setClassify(true);
-		  this.cvSDiagram.repaint();
+		  this.cvScatterDiagram.setClassify(true);
+		  this.cvScatterDiagram.repaint();
 	  }
 	  else
 	  {
 		  this.cvOpic.getPolygon().reset();
-  		this.cvSDiagram.resetScatterDiagramPixelsValues();
-  		this.cvSDiagram.setScatterDiagramPixelsValues();
+  		this.cvScatterDiagram.resetScatterDiagramPixelsValues();
+  		this.cvScatterDiagram.setScatterDiagramPixelsValues();
   		this.cvOpic.cvSelectedPixel=false;
   		repaint();
-		  this.cvSDiagram.setClassify(false);
-		  this.cvSDiagram.repaint();
+		  this.cvScatterDiagram.setClassify(false);
+		  this.cvScatterDiagram.repaint();
 	  }
   }
   
@@ -363,32 +420,32 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
 			  for(int j=0; j< cvOpic.getWidth();j++)
 		    	lvSelectedPixels[i][j]=true;
 	   	 
-		  cvSDiagram.setSelectedPixels(lvSelectedPixels);
-   	 	cvSDiagram.setHeight(this.cvOpic.getHeight());
-   	 	cvSDiagram.setWidth(this.cvOpic.getWidth());
-   	  this.cvSDiagram.resetScatterDiagramPixelsValues();
-   	  this.cvSDiagram.setScatterDiagramPixelsValues();
-   	 	cvSDiagram.repaint(); 
+		  cvScatterDiagram.setSelectedPixels(lvSelectedPixels);
+   	 	cvScatterDiagram.setHeight(this.cvOpic.getHeight());
+   	 	cvScatterDiagram.setWidth(this.cvOpic.getWidth());
+   	  this.cvScatterDiagram.resetScatterDiagramPixelsValues();
+   	  this.cvScatterDiagram.setScatterDiagramPixelsValues();
+   	 	cvScatterDiagram.repaint(); 
 	  }
 	  else
 	  {
-		  cvSDiagram.setSelectedPixels(this.cvOpic.getSelectedPixels());
-	   	this.cvSDiagram.resetScatterDiagramPixelsValues();
-	   	this.cvSDiagram.setScatterDiagramPixelsValues();
-	   	cvSDiagram.repaint();
+		  cvScatterDiagram.setSelectedPixels(this.cvOpic.getSelectedPixels());
+	   	this.cvScatterDiagram.resetScatterDiagramPixelsValues();
+	   	this.cvScatterDiagram.setScatterDiagramPixelsValues();
+	   	cvScatterDiagram.repaint();
 	  } 
   }
 
   void jComboBoxX_mouseClicked(ItemEvent e) 
   {
-  	this.cvSDiagram.setBandX(cvJComboBoxX.getSelectedIndex());
+  	this.cvScatterDiagram.setBandX(cvJComboBoxX.getSelectedIndex());
   	this.cvOpic.setBandX(cvJComboBoxX.getSelectedIndex());
   	this.cvOpic.repaint();
   }
   
   void jComboBoxY_mouseClicked(ItemEvent e) 
   {  
-  	this.cvSDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
+  	this.cvScatterDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
   	this.cvOpic.setBandY(cvJComboBoxY.getSelectedIndex());
   	this.cvOpic.repaint();
   }
@@ -401,7 +458,7 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
   public void jMenuBandsSelection_actionPerformed(ActionEvent evt)
   {
 	  
-	  FrameAxisSelection frmSel = new FrameAxisSelection(this);
+	  FsiRGBBandSelectionFrame frmSel = new FsiRGBBandSelectionFrame(this);
 	  Dimension dlgSize = frmSel.getPreferredSize();
 	  Dimension frmSize = getSize();
 	  Point loc = getLocation();
@@ -413,7 +470,7 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
 
   public void jMenuHelpAbout_actionPerformed(ActionEvent e) 
   {
-  	FrameAbout dlg = new FrameAbout(this);
+  	FsiAboutFrame dlg = new FsiAboutFrame(this);
     Dimension dlgSize = dlg.getPreferredSize();
     Dimension frmSize = getSize();
     Point loc = getLocation();
@@ -443,7 +500,7 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
   {
   	if (cvJRadioButtonPS.isSelected())
   	{
-  		this.cvSDiagram.setClicking();
+  		this.cvScatterDiagram.setClicking();
   	  cvOpic.setClicking();
   	  cvJRadioButtonDrag.setSelected(false); 
   	}
@@ -454,7 +511,7 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
   {
   	if (cvJRadioButtonDrag.isSelected())
   	{
-  		this.cvSDiagram.setDragging();
+  		this.cvScatterDiagram.setDragging();
   		cvOpic.setDragging();
   	  cvJRadioButtonPS.setSelected(false);
   	}
@@ -466,8 +523,8 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
   	{
   		this.cvJRadioButtonMaxLike.setSelected(false);
   		this.cvJRadioButtonMinDist.setSelected(false);
-  		this.cvSDiagram.setAlgorithm(3);
-  		cvSDiagram.repaint();
+  		this.cvScatterDiagram.setAlgorithm(3);
+  		cvScatterDiagram.repaint();
   	}
   }
   
@@ -477,8 +534,8 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
   	{
   		this.cvJRadioButtonParallel.setSelected(false);
   		this.cvJRadioButtonMinDist.setSelected(false);
-  		this.cvSDiagram.setAlgorithm(2);
-  		cvSDiagram.repaint();
+  		this.cvScatterDiagram.setAlgorithm(2);
+  		cvScatterDiagram.repaint();
   	}
   }
   
@@ -488,39 +545,38 @@ public class Frame extends JFrame implements ActionListener, ChangeListener, Ite
   	{
   		this.cvJRadioButtonMaxLike.setSelected(false);
   		this.cvJRadioButtonParallel.setSelected(false);
-  		this.cvSDiagram.setAlgorithm(1);
-  		cvSDiagram.setRadium(Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString()));
-  		cvSDiagram.repaint();
+  		this.cvScatterDiagram.setAlgorithm(1);
+  		cvScatterDiagram.setRadium(Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString()));
+  		cvScatterDiagram.repaint();
   	
   	}
   }
 
   void jSpinnerDistanceMean_ActionPerformed(ChangeEvent e)
   {
-  	cvSDiagram.setRadium(Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString()));
-  	cvSDiagram.repaint();
+  	cvScatterDiagram.setRadium(Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString()));
+  	cvScatterDiagram.repaint();
   }
   
   void jSpinnerRectangleSize_ActionPerformed(ChangeEvent e)
   {
-  	cvSDiagram.setRectangleSize(Integer.parseInt(cvJSpinnerRectangleSize.getValue().toString()));
-  	cvSDiagram.repaint();
+  	cvScatterDiagram.setRectangleSize(Integer.parseInt(cvJSpinnerRectangleSize.getValue().toString()));
+  	cvScatterDiagram.repaint();
   }
 
   void jSpinnerDistanceSD_ActionPerformed(ChangeEvent e)
   {
-  	cvSDiagram.setRectangleSize(Integer.parseInt(cvJSpinnerDistanceSD.getValue().toString()));
-  	cvSDiagram.repaint();
+  	cvScatterDiagram.setRectangleSize(Integer.parseInt(cvJSpinnerDistanceSD.getValue().toString()));
+  	cvScatterDiagram.repaint();
   }
 }
 
 
-
 class Frame_jPanel2_mouseAdapter extends java.awt.event.MouseAdapter 
 {
-  Frame adaptee;
+  FsiMainFrame adaptee;
 
-  Frame_jPanel2_mouseAdapter(Frame adaptee) 
+  Frame_jPanel2_mouseAdapter(FsiMainFrame adaptee) 
   {
     this.adaptee = adaptee;
   }

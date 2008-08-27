@@ -5,8 +5,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 
 
-public class ScatterDiagram extends JComponent implements java.awt.event.MouseListener,
-java.awt.event.MouseMotionListener{
+public class ScatterDiagram extends JComponent implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener
+{
 
 	private boolean cvInitialPen        = true;
    
@@ -60,6 +60,8 @@ java.awt.event.MouseMotionListener{
   {
     this.addMouseListener(this);
     this.addMouseMotionListener(this);
+    this.setPreferredSize(new Dimension(275,275));
+    
     cvBandX=1;
     cvBandY=1;
     	
