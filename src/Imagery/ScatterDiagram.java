@@ -3,6 +3,7 @@ package Imagery;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
+import Jama.*;
 
 
 public class ScatterDiagram extends JComponent implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener
@@ -287,8 +288,35 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
       break;
       case 2: /* Maximum Likelihood*/
       {
+      	double lvVarX=0.0;
+      	double lvVarY=0.0;
+      	double lvCoVarXY=0.0;
+      	if(cvSelectedPixels!= null)
+          for(int i=0; i<256; i++)
+          	for (int j=0; j<256; j++)
+          	{
+          		lvVarX+= cvScatterDiagramPixelsValues[i][j]*Math.pow((i-lvMeanX),2);
+          		lvVarY+= cvScatterDiagramPixelsValues[i][j]*Math.pow((j-lvMeanY),2);
+          		lvCoVarXY+=cvScatterDiagramPixelsValues[i][j]*(i-lvMeanX)*(j-lvMeanY);
+          	
+          	}
+      	lvVarX/=lvNPoints;
+      	lvVarY/=lvNPoints;
+      	lvCoVarXY/=lvNPoints;
+      	double [][]lvCovarianceMatrix={{lvVarX,lvCoVarXY},{lvCoVarXY,lvVarY}};
       	
-      	
+      	Matrix A = new Matrix(lvCovarianceMatrix);
+      	 EigenvalueDecomposition e = A.eig();
+      	 Matrix V = e.getV();
+      	 double x[][]=V.getArray();
+      	 for(int i=0;i<x.length;i++)
+      		 for(int j=0;j<x[0].length;j++)
+      		 System.out.println(x[i][j]);
+      	System.out.println("lvMeanX: "+lvMeanX);
+      	System.out.println("lvMeanY: "+lvMeanY);
+      	System.out.println("VarianceX: "+lvVarX);
+      	System.out.println("VarianceY: "+lvVarY);
+      	System.out.println("CovarianceXY: "+lvCoVarXY);
       }
       break;
       case 3: /* Parallelepiped */

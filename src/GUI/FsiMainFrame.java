@@ -33,9 +33,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
  	JRadioButton cvJRadioButtonMinDist= new JRadioButton();  
  	JRadioButton cvJRadioButtonMaxLike= new JRadioButton(); 
  	JRadioButton cvJRadioButtonParallel= new JRadioButton();
- 	JPanel cvJPanelMinimumDistance = new JPanel();
- 	JPanel cvJPanelMaximumLikelihood = new JPanel();
- 	JPanel cvJPanelParallelepiped = new JPanel();
  	
  	JSpinner cvJSpinnerDistanceSD = new JSpinner();
  	JSpinner cvJSpinnerDistanceMean = new JSpinner();
@@ -210,7 +207,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
  		
     JPanel lvJPanelSelectionMethod = new JPanel();
     lvJPanelSelectionMethod.setBackground(Color.WHITE);
-    lvJPanelSelectionMethod.setLayout(new GridLayout(2,1));
+    lvJPanelSelectionMethod.setLayout(new GridLayout(1,1));
     lvJPanelSelectionMethod.setBorder(new TitledBorder("Selection method"));
     lvJPanelSelectionMethod.add(cvJRadioButtonPS);
     lvJPanelSelectionMethod.add(cvJRadioButtonDrag);
@@ -218,11 +215,14 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     lvConstraints.fill = GridBagConstraints.HORIZONTAL;
   	lvConstraints.anchor = GridBagConstraints.NORTH;
   	lvConstraints.gridwidth = 2;
-  	lvConstraints.gridheight = 2;
-		lvConstraints.gridx = 3;
+  	lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 2;
   	lvConstraints.gridy = 2;
   	lvCenterPanel.add(lvJPanelSelectionMethod, lvConstraints);
   	
+  	
+
+ 
   	/*
   	 * Scatter plot display type
   	 */
@@ -235,13 +235,138 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 		lvConstraints.gridx = 0;
   	lvConstraints.gridy = 3;
   	lvCenterPanel.add(cvJCheckBoxWholeImage, lvConstraints);
-		
-		
-			cvJCheckBoxClassify.addItemListener(this);
+  	
+  	/*Lower Pane*/
+  	JPanel lvJPanelSelectionAlgorithm = new JPanel();
+  	lvJPanelSelectionAlgorithm.setBackground(Color.LIGHT_GRAY);
+  	lvJPanelSelectionAlgorithm.setLayout(new GridBagLayout());
+    lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 5;
+  	lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 0;
+  	lvConstraints.gridy = 4;
+  	lvCenterPanel.add(lvJPanelSelectionAlgorithm, lvConstraints);
+  	
+  	
+  	/*Classify checkbox*/
+  	cvJCheckBoxClassify.addItemListener(this);
+  	cvJCheckBoxClassify.setBackground(Color.LIGHT_GRAY);
+	  cvJCheckBoxClassify.addItemListener(this);
+	  //cvJCheckBoxClassify.setHorizontalAlignment(SwingConstants.RIGHT);
+	  lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+	  lvConstraints.anchor = GridBagConstraints.WEST;
+	  lvConstraints.gridwidth = 1;
+	  lvConstraints.gridheight = 1; 
+		lvConstraints.gridx = 0;
+	  lvConstraints.gridy = 6;
+	  lvJPanelSelectionAlgorithm.add(cvJCheckBoxClassify, lvConstraints);
+  	
+		/*JSeparator*/
+//  	lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+//  	lvConstraints.anchor = GridBagConstraints.SOUTH;
+//  	lvConstraints.gridwidth = 0;
+//  	lvConstraints.gridheight = 1;
+//		lvConstraints.gridx = 0;
+//  	lvConstraints.gridy = 5;
+//  	JSeparator lvSeparator = new JSeparator(JSeparator.HORIZONTAL);
+//  	lvCenterPanel.add(lvSeparator,lvConstraints);
+//  	lvSeparator.setPreferredSize(new Dimension(500,10));
+//  	 //lvCenterPanel.getPreferredSize().height)
 
-		 /*
-    ///
-    
+  	
+		
+		
+
+			
+			/*Radio button minimum distance*/
+		cvJRadioButtonMinDist.setText("Minimum distance");
+		cvJRadioButtonMinDist.setBackground(Color.LIGHT_GRAY);
+		cvJRadioButtonMinDist.addActionListener(this);
+		cvJRadioButtonMinDist.setSelected(true);
+		lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+		lvConstraints.anchor = GridBagConstraints.NORTH;
+		lvConstraints.gridwidth = 1;
+		lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 0;
+		lvConstraints.gridy = 7;
+		lvJPanelSelectionAlgorithm.add(cvJRadioButtonMinDist, lvConstraints);
+	    
+		/*Spinner for minimum distance*/
+		JPanel lvJPanelMinimumDistance = new JPanel();	
+	  cvJSpinnerDistanceMean.addChangeListener(this);
+	  lvJPanelMinimumDistance.setLayout(new BoxLayout(lvJPanelMinimumDistance, BoxLayout.Y_AXIS));
+	  lvJPanelMinimumDistance.setBorder(new TitledBorder("Distance from mean"));
+	 	lvJPanelMinimumDistance.setBackground(Color.LIGHT_GRAY);
+	 	lvJPanelMinimumDistance.add(cvJSpinnerDistanceMean);
+	  lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+	  lvConstraints.anchor = GridBagConstraints.NORTH;
+	  lvConstraints.gridwidth = 1;
+	  lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 0;
+	  lvConstraints.gridy = 8;
+	  lvJPanelSelectionAlgorithm.add(lvJPanelMinimumDistance, lvConstraints);
+	    	
+	    
+	  	
+	  /*radio button maximum likelihood*/
+	  cvJRadioButtonMaxLike.addActionListener(this);
+	  cvJRadioButtonMaxLike.setText("Maximum likelihood");
+	  cvJRadioButtonMaxLike.setBackground(Color.LIGHT_GRAY);
+	  lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+	  lvConstraints.anchor = GridBagConstraints.NORTH;
+	  lvConstraints.gridwidth = 1;
+	  lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 1;
+	  lvConstraints.gridy = 7;
+	  lvJPanelSelectionAlgorithm.add(cvJRadioButtonMaxLike, lvConstraints);
+	  	
+	  /*jspinner maximum likelihood*/
+	  JPanel lvJPanelMaximumLikelihood = new JPanel();
+	  lvJPanelMaximumLikelihood.add(cvJSpinnerDistanceSD);
+	  lvJPanelMaximumLikelihood.setBackground(Color.LIGHT_GRAY);
+	  cvJSpinnerDistanceSD.addChangeListener(this);
+	  lvJPanelMaximumLikelihood.setBorder(new TitledBorder("Distance from SD"));
+	  lvJPanelMaximumLikelihood.setLayout(new BoxLayout(lvJPanelMaximumLikelihood, BoxLayout.Y_AXIS));
+	  lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+	  lvConstraints.anchor = GridBagConstraints.NORTH;
+	  lvConstraints.gridwidth = 1;
+	  lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 1;
+	  lvConstraints.gridy = 8;
+	  lvJPanelSelectionAlgorithm.add(lvJPanelMaximumLikelihood, lvConstraints);
+	  	
+	  /*radio button parallelepiped*/
+	  cvJRadioButtonParallel.addActionListener(this);
+	  cvJRadioButtonParallel.setText("Parallelepiped");
+	  cvJRadioButtonParallel.setBackground(Color.LIGHT_GRAY);
+	  lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+	  lvConstraints.anchor = GridBagConstraints.NORTH;
+	  lvConstraints.gridwidth = 1;
+	  lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 2;
+	  lvConstraints.gridy = 7;
+	  lvJPanelSelectionAlgorithm.add(cvJRadioButtonParallel, lvConstraints);
+	  	
+	  /*spinner parallelepiped size*/
+	  JPanel lvJPanelParallelepiped = new JPanel();
+	  lvJPanelParallelepiped.setLayout(new BorderLayout());
+	 	lvJPanelParallelepiped.setBorder(new TitledBorder("Rectangle size"));
+	 	lvJPanelParallelepiped.setBackground(Color.LIGHT_GRAY);
+	 	lvJPanelParallelepiped.add(cvJSpinnerRectangleSize);
+	  cvJSpinnerRectangleSize.addChangeListener(this);
+	 	lvConstraints.fill = GridBagConstraints.HORIZONTAL;
+	  lvConstraints.anchor = GridBagConstraints.NORTH;
+	  lvConstraints.gridwidth = 1;
+	  lvConstraints.gridheight = 1;
+		lvConstraints.gridx = 2;
+	  lvConstraints.gridy = 8;
+	  lvJPanelSelectionAlgorithm.add(lvJPanelParallelepiped, lvConstraints);
+	  	
+	  
+	 		
+	  	/*
+   
     cvJSplitPane1.setOrientation(JSplitPane.VERTICAL_SPLIT);
     cvJSplitPane1.setBorder(null);
     cvJSplitPane1.setDividerSize(6);
@@ -261,51 +386,14 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     cvJSplitPane1.setDividerLocation(400);
     lvJPanelScatterPlotControls.setBorder(BorderFactory.createEtchedBorder());
 
-    
-    cvJPanel3.setLayout(new GridLayout(2,5)); 
- 		
-    
-    
-    cvJRadioButtonMinDist.setText("Minimum distance");
-    cvJRadioButtonMaxLike.setText("Maximum likelihood");
-    cvJRadioButtonParallel.setText("Parallelepiped");
-    
- 		cvJPanel3.add(cvJRadioButtonMinDist, 0); 
- 		cvJPanel3.add(cvJRadioButtonMaxLike, 1); 
- 		cvJPanel3.add(cvJRadioButtonParallel, 2); 
- 		
-
- 	  cvJRadioButtonParallel.addActionListener(this);
- 		cvJRadioButtonMinDist.addActionListener(this);
-  	cvJRadioButtonMaxLike.addActionListener(this);
-  	
- 		
- 		
- 		cvJPanelMinimumDistance.setLayout(new BorderLayout());
- 		cvJPanelMinimumDistance.setBorder(new TitledBorder("Distance from mean"));
- 		cvJRadioButtonMinDist.setSelected(true);
- 		cvJPanel3.add(cvJPanelMinimumDistance,3);
- 		cvJPanelMinimumDistance.add(cvJSpinnerDistanceMean);
- 		
- 		cvJPanelMaximumLikelihood.setLayout(new BorderLayout());
- 		cvJPanelMaximumLikelihood.setBorder(new TitledBorder("Distance from SD"));
- 		cvJPanel3.add(cvJPanelMaximumLikelihood,4);
- 		cvJPanelMaximumLikelihood.add(cvJSpinnerDistanceSD);
- 		
- 		
- 		cvJPanelParallelepiped.setLayout(new BorderLayout());
- 		cvJPanelParallelepiped.setBorder(new TitledBorder("Rectangle size"));
- 		cvJPanel3.add(cvJPanelParallelepiped,5);
- 		cvJPanelParallelepiped.add(cvJSpinnerRectangleSize);
- 		
     cvJPanelSelectMethod.setBackground(Color.white);
     
     lvJPanelScatterPlotControls.add(cvJPanelSelectMethod);
     cvJPanelSelectMethod.setBounds(305,325,250,53);
    
-   	cvJSpinnerDistanceMean.addChangeListener(this);
-    cvJSpinnerDistanceSD.addChangeListener(this);
-   	cvJSpinnerRectangleSize.addChangeListener(this);
+   	
+    
+   	
    	*/
   }
 
