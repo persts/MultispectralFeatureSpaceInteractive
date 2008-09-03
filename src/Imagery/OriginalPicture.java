@@ -272,11 +272,6 @@ java.awt.event.MouseMotionListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    /**
-     *
-     * @param e
-     */
-
     public void mouseDragged(MouseEvent e) 
     {
     	if (cvDragging)

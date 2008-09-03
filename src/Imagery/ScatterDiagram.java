@@ -174,7 +174,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
         	{
         		if(cvSelectedPixels!= null)
         			
-        			if(  cvSelectedPixels[i][j] == true )
+        			if(  cvSelectedPixels[i][j] == true)
         			{
         				//&& cvScatterDiagramPixelsValues[i][j]<13
         				cvScatterDiagramPixelsValues[cvPictureBandX[i][j]][cvPictureBandY[i][j]]++;
@@ -291,32 +291,74 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
       	double lvVarX=0.0;
       	double lvVarY=0.0;
       	double lvCoVarXY=0.0;
-      	if(cvSelectedPixels!= null)
-          for(int i=0; i<256; i++)
-          	for (int j=0; j<256; j++)
-          	{
-          		lvVarX+= cvScatterDiagramPixelsValues[i][j]*Math.pow((i-lvMeanX),2);
-          		lvVarY+= cvScatterDiagramPixelsValues[i][j]*Math.pow((j-lvMeanY),2);
-          		lvCoVarXY+=cvScatterDiagramPixelsValues[i][j]*(i-lvMeanX)*(j-lvMeanY);
-          	
-          	}
+//     	if(cvSelectedPixels!= null)
+//          for(int i=0; i<256; i++)
+//         	for (int j=0; j<256; j++)
+//       	{
+//          		lvVarX+= cvScatterDiagramPixelsValues[i][j]*Math.pow((i-lvMeanX),2);
+//         		lvVarY+= cvScatterDiagramPixelsValues[i][j]*Math.pow((j-lvMeanY),2);
+//          		lvCoVarXY+=cvScatterDiagramPixelsValues[i][j]*(i-lvMeanX)*(j-lvMeanY);
+//        	
+//     	}
+//      	
+      	
+      	
+      	
+     	 for(int i=0; i<cvWidth; i++)
+         	for (int j=0; j<cvHeight; j++)
+         	{
+         		if(cvSelectedPixels!= null)
+         			
+         			if(  cvSelectedPixels[i][j] == true)
+         			{
+         				
+         				lvVarX+= Math.pow((cvPictureBandX[i][j]-lvMeanX),2);
+            		lvVarY+= Math.pow((cvPictureBandY[i][j]-lvMeanY),2);
+            		lvCoVarXY+=(cvPictureBandX[i][j]-lvMeanX)*(cvPictureBandY[i][j]-lvMeanY);
+         			
+
+      	
+         			}
+         	}
       	lvVarX/=lvNPoints;
       	lvVarY/=lvNPoints;
       	lvCoVarXY/=lvNPoints;
       	double [][]lvCovarianceMatrix={{lvVarX,lvCoVarXY},{lvCoVarXY,lvVarY}};
       	
+     
+      	double lvLambdaL= (0.5)*(lvCovarianceMatrix[0][0]+lvCovarianceMatrix[1][1]+Math.sqrt(Math.pow(lvCovarianceMatrix[0][0]-lvCovarianceMatrix[1][1], 2)+4*lvCovarianceMatrix[0][1]*lvCovarianceMatrix[0][1]));
+
+      	double lvLambdaS= (0.5)*(lvCovarianceMatrix[0][0]+lvCovarianceMatrix[1][1]-Math.sqrt(Math.pow(lvCovarianceMatrix[0][0]-lvCovarianceMatrix[1][1], 2)+4*lvCovarianceMatrix[0][1]*lvCovarianceMatrix[0][1]));
+
+      	
+      	double raiz=4*Math.sqrt(lvLambdaL);
+      	double raizS=4*Math.sqrt(lvLambdaS);
+      	System.out.println("lambda raiz: "+raiz);
+      	System.out.println("lambda raizS: "+raizS);
       	Matrix A = new Matrix(lvCovarianceMatrix);
-      	 EigenvalueDecomposition e = A.eig();
+     	  EigenvalueDecomposition e = A.eig();
       	 Matrix V = e.getV();
-      	 double x[][]=V.getArray();
-      	 for(int i=0;i<x.length;i++)
-      		 for(int j=0;j<x[0].length;j++)
-      		 System.out.println(x[i][j]);
-      	System.out.println("lvMeanX: "+lvMeanX);
-      	System.out.println("lvMeanY: "+lvMeanY);
-      	System.out.println("VarianceX: "+lvVarX);
-      	System.out.println("VarianceY: "+lvVarY);
-      	System.out.println("CovarianceXY: "+lvCoVarXY);
+      	 double[] eval = e.getRealEigenvalues();
+
+      	 double[][]v=V.getArray();
+      
+    	 for(int j=0;j<eval.length;j++)
+      		 System.out.println("eignevalue"+j+":"+6*Math.sqrt(eval[j]));
+
+//      	 
+      	 for(int i=0;i<v.length;i++)
+      		 for(int j=0;j<v[0].length;j++)
+      			 System.out.println("v,"+Math.toDegrees(Math.atan2(v[0][0],v[0][1]))); 
+      	 //g2.drawLine(lvMeanX+15-5, 255-lvMeanY, lvMeanX+20, 255-lvMeanY);
+      	 
+      	 g2.translate(lvMeanX+15, 255-lvMeanY);
+     		g2.rotate(-Math.atan2(v[0][0],v[0][1]));
+     		
+     		g2.setStroke(new BasicStroke(3));
+     		g2.setColor(Color.YELLOW);
+      		g2.drawLine((0-(int)raiz/2), 0,( 0+(int)raiz/2), 0)	;
+      		g2.drawLine(0,0+(int)raizS/2, 0, 0-(int)raizS/2)	;
+
       }
       break;
       case 3: /* Parallelepiped */
