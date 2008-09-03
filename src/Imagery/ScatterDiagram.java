@@ -352,7 +352,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
       	 //g2.drawLine(lvMeanX+15-5, 255-lvMeanY, lvMeanX+20, 255-lvMeanY);
       	 
       	 g2.translate(lvMeanX+15, 255-lvMeanY);
-     		g2.rotate(-Math.atan2(v[0][0],v[0][1]));
+     		g2.rotate(-Math.abs(Math.atan2(v[0][0],v[0][1])));
      		
      		g2.setStroke(new BasicStroke(3));
      		g2.setColor(Color.YELLOW);
