@@ -3,11 +3,12 @@ package GUI;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
 
 
 
-public class FsiAboutFrame extends JDialog implements ActionListener {
+
+public class FsiAboutFrame extends JDialog implements ActionListener 
+{
 
   JPanel panel1 = new JPanel();
   JPanel panel2 = new JPanel();
@@ -25,30 +26,29 @@ public class FsiAboutFrame extends JDialog implements ActionListener {
   BorderLayout borderLayout2 = new BorderLayout();
   FlowLayout flowLayout1 = new FlowLayout();
   GridLayout gridLayout1 = new GridLayout();
-  String product = "graphical environment";
+  String product = "Space Interactive Tool";
   String version = "1.0";
-  String copyright = "Copyright (c)";
-  String comments = "Bla bla bla";
+  String comments1 = "Tool developed for the department of Biodiversity and Conservation";
+  String comments2 = "of the American Museum of Natural History";
   
-  public FsiAboutFrame(FsiMainFrame parent) {
+  
+  public FsiAboutFrame(FsiMainFrame parent) 
+  {
     super(parent);
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
     try {
-      jbInit();
+      init();
     }
     catch(Exception e) {
       e.printStackTrace();
     }
   }
 
-  /**
-   * Inicializaci�n de componentes
-   * @throws java.lang.Exception
-   */
 
-  private void jbInit() throws Exception  {
-    //image1 = new ImageIcon(GUI.Frame.class.getResource("../Imagenes/uclm.jpg"));
-    //imageLabel.setIcon(image1);
+  private void init() throws Exception  
+  {
+    image1 = new ImageIcon(GUI.FsiMainFrame.class.getResource("amnh.gif"));
+    imageLabel.setIcon(image1);
     this.setTitle("About Space Interactive Tool");
     panel1.setLayout(borderLayout1);
     panel2.setLayout(borderLayout2);
@@ -59,8 +59,8 @@ public class FsiAboutFrame extends JDialog implements ActionListener {
     gridLayout1.setColumns(1);
     label1.setText(product);
     label2.setText(version);
-    label3.setText(copyright);
-    label4.setText(comments);
+    label3.setText(comments1);
+    label4.setText(comments2);
     insetsPanel3.setLayout(gridLayout1);
     insetsPanel3.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 10));
     button1.setText("OK");
@@ -79,32 +79,24 @@ public class FsiAboutFrame extends JDialog implements ActionListener {
     setResizable(true);
   }
 
-  /**
-   * Modificado para poder salir cuando se cierra la ventana
-   * @param e
-   */
 
-  protected void processWindowEvent(WindowEvent e) {
+  protected void processWindowEvent(WindowEvent e) 
+  {
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
       cancel();
     }
     super.processWindowEvent(e);
   }
 
-  /**
-   * Cerrar el cuadro de di�logo
-   */
 
-  void cancel() {
+  void cancel() 
+  {
     dispose();
   }
 
-  /**
-   * Cerrar el cuadro de di�logo tras un suceso de un bot�n
-   * @param e
-   */
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent e) 
+  {
     if (e.getSource() == button1) {
       cancel();
     }

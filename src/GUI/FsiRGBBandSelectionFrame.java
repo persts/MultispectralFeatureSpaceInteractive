@@ -7,7 +7,8 @@ import javax.swing.border.*;
 
 
 
-public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener {
+public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener 
+{
 	
 	FsiMainFrame parent;
 	String cvXAxis[];
@@ -33,28 +34,31 @@ public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener 
   GridLayout gridLayout1 = new GridLayout();
  
   
-  public FsiRGBBandSelectionFrame(FsiMainFrame theparent) {
+  public FsiRGBBandSelectionFrame(FsiMainFrame theparent) 
+  {
     super(theparent);
     parent = theparent;
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
     try {
-      jbInit();
+      init();
     }
     catch(Exception e) {
       e.printStackTrace();
     }
   }
 
-  private void jbInit() throws Exception  
+  private void init() throws Exception  
   {
     this.setTitle("Select band for each axis");
-    panel1.setLayout(flowLayout1);
-    insetsPanel1.setLayout(flowLayout1);
+    insetsPanel1.setLayout(new GridBagLayout());
+  	GridBagConstraints lvConstraints = new GridBagConstraints();
+  
+    //insetsPanel1.setLayout(flowLayout1);
     JPanel lvBandSelection = new JPanel();
-   	lvBandSelection.setLayout(new GridLayout(3,2));
+   	lvBandSelection.setLayout(new GridLayout(3,3));
    	
    	lvBandSelection.setBorder(new TitledBorder("Band Selection"));
-   	lvBandSelection.setBounds(575, 50, 200, 100);
+   	//lvBandSelection.setBounds(575, 50, 200, 100);
    	lvBandSelection.add(new JLabel("Red"));
    	
    	cvXAxis=parent.cvOpic.getBands();
@@ -73,15 +77,27 @@ public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener 
    	
    	cvBlueComboBox.addActionListener(this);
    	lvBandSelection.add(cvBlueComboBox);
-   	insetsPanel1.add(lvBandSelection,null);
-    
-    button1.setText("OK");
+   	
+   	lvConstraints.fill = GridBagConstraints.VERTICAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 1;
+  	lvConstraints.gridheight = 1;
+  	lvConstraints.gridx = 0;
+  	lvConstraints.gridy = 0;
+  	insetsPanel1.add(lvBandSelection, lvConstraints);
+   	
+  	button1.setText("OK");
     button1.addActionListener(this);
-   
-    this.getContentPane().add(panel1, null);
+  	lvConstraints.fill = GridBagConstraints.VERTICAL;
+  	lvConstraints.anchor = GridBagConstraints.NORTH;
+  	lvConstraints.gridwidth = 1;
+  	lvConstraints.gridheight = 1;
+  	lvConstraints.gridx = 0;
+  	lvConstraints.gridy = 10;
+  	insetsPanel1.add(button1, lvConstraints);
+  	
+    this.getContentPane().add(insetsPanel1, null);
 
-    insetsPanel1.add(button1,null);
-    panel1.add(insetsPanel1, BorderLayout.SOUTH);
     setResizable(true);
     
     cvRedComboBox.setSelectedIndex(parent.cvOpic.getRedBand());
@@ -89,18 +105,21 @@ public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener 
     cvBlueComboBox.setSelectedIndex(parent.cvOpic.getBlueBand());
   }
 
-  protected void processWindowEvent(WindowEvent e) {
+  protected void processWindowEvent(WindowEvent e) 
+  {
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
       cancel();
     }
     super.processWindowEvent(e);
   }
 
-  void cancel() {
+  void cancel() 
+  {
     dispose();
   }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent e) 
+  {
 	  Object obj = e.getSource();
     if (e.getSource() == button1) {
       cancel();  

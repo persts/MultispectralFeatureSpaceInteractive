@@ -182,7 +182,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	lvConstraints.gridwidth = 1;
   	lvConstraints.gridheight = 1;
 		lvConstraints.gridx = 0;
-  	lvConstraints.gridy = 2;
+  	lvConstraints.gridy = 3;
   	lvJPanelXSelection.setPreferredSize(new Dimension(cvScatterDiagram.getPreferredSize().width/2, lvJPanelXSelection.getPreferredSize().height));
   	lvCenterPanel.add(lvJPanelXSelection, lvConstraints);
   	
@@ -191,7 +191,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	lvConstraints.gridwidth = 1;
   	lvConstraints.gridheight = 1;
 		lvConstraints.gridx = 1;
-  	lvConstraints.gridy = 2;
+  	lvConstraints.gridy = 3;
   	lvCenterPanel.add(lvJPanelYSelection, lvConstraints);
 		
   	/*
@@ -217,7 +217,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	lvConstraints.gridwidth = 2;
   	lvConstraints.gridheight = 1;
 		lvConstraints.gridx = 2;
-  	lvConstraints.gridy = 2;
+  	lvConstraints.gridy = 3;
   	lvCenterPanel.add(lvJPanelSelectionMethod, lvConstraints);
   	
   	
@@ -233,7 +233,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	lvConstraints.gridwidth = 1;
   	lvConstraints.gridheight = 1;
 		lvConstraints.gridx = 0;
-  	lvConstraints.gridy = 3;
+  	lvConstraints.gridy = 2;
   	lvCenterPanel.add(cvJCheckBoxWholeImage, lvConstraints);
   	
   	/*Lower Pane*/
@@ -503,24 +503,34 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   {
 	  if (cvJCheckBoxWholeImage.isSelected())
 	  {
-		  boolean [][] lvSelectedPixels = new boolean [cvOpic.getHeight()][cvOpic.getWidth()];
-		  for(int i=0; i< cvOpic.getHeight();i++)
-			  for(int j=0; j< cvOpic.getWidth();j++)
-		    	lvSelectedPixels[i][j]=true;
-	   	 
-		  cvScatterDiagram.setSelectedPixels(lvSelectedPixels);
-   	 	cvScatterDiagram.setHeight(this.cvOpic.getHeight());
-   	 	cvScatterDiagram.setWidth(this.cvOpic.getWidth());
-   	  this.cvScatterDiagram.resetScatterDiagramPixelsValues();
-   	  this.cvScatterDiagram.setScatterDiagramPixelsValues();
-   	 	cvScatterDiagram.repaint(); 
+//		  boolean [][] lvSelectedPixels = new boolean [cvOpic.getHeight()][cvOpic.getWidth()];
+//		  for(int i=0; i< cvOpic.getHeight();i++)
+//			  for(int j=0; j< cvOpic.getWidth();j++)
+//		    	lvSelectedPixels[i][j]=true;
+//	   	 
+//		  cvScatterDiagram.setSelectedPixels(lvSelectedPixels);
+//   	 	cvScatterDiagram.setHeight(this.cvOpic.getHeight());
+//   	 	cvScatterDiagram.setWidth(this.cvOpic.getWidth());
+//   	  this.cvScatterDiagram.resetScatterDiagramPixelsValues();
+//   	  this.cvScatterDiagram.setScatterDiagramPixelsValues();
+//   	 	cvScatterDiagram.repaint(); 
+	  	
+	  	cvScatterDiagram.setWidth(this.cvOpic.getWidth());
+	  	cvScatterDiagram.setHeight(this.cvOpic.getHeight());
+	  	this.cvScatterDiagram.setWholePicture(true);
+	  	this.cvScatterDiagram.resetWholePicture();
+	  	this.cvScatterDiagram.updateWholePicture();
+	  	
+	  	cvScatterDiagram.repaint(); 
 	  }
 	  else
 	  {
-		  cvScatterDiagram.setSelectedPixels(this.cvOpic.getSelectedPixels());
-	   	this.cvScatterDiagram.resetScatterDiagramPixelsValues();
-	   	this.cvScatterDiagram.setScatterDiagramPixelsValues();
-	   	cvScatterDiagram.repaint();
+//		  cvScatterDiagram.setSelectedPixels(this.cvOpic.getSelectedPixels());
+//	   	this.cvScatterDiagram.resetScatterDiagramPixelsValues();
+//	   	this.cvScatterDiagram.setScatterDiagramPixelsValues();
+//	   	cvScatterDiagram.repaint();
+	  	this.cvScatterDiagram.setWholePicture(false);
+	  	cvScatterDiagram.repaint(); 
 	  } 
   }
 
@@ -528,14 +538,27 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   {
   	this.cvScatterDiagram.setBandX(cvJComboBoxX.getSelectedIndex());
   	this.cvOpic.setBandX(cvJComboBoxX.getSelectedIndex());
+  	
+  	//this.cvScatterDiagram.resetWholePicture();
+  	
   	this.cvOpic.repaint();
+  	
+  	//this.cvScatterDiagram.updateWholePicture();
+  	//cvScatterDiagram.repaint(); 	 
   }
   
   void jComboBoxY_mouseClicked(ItemEvent e) 
   {  
   	this.cvScatterDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
+ 
   	this.cvOpic.setBandY(cvJComboBoxY.getSelectedIndex());
+  	
+  	//this.cvScatterDiagram.resetWholePicture();
+  	
   	this.cvOpic.repaint();
+  	
+  	//this.cvScatterDiagram.updateWholePicture();
+  	//cvScatterDiagram.repaint(); 	
   }
   
   public void jMenuFileExit_actionPerformed(ActionEvent e) 
@@ -588,6 +611,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   {
   	if (cvJRadioButtonPS.isSelected())
   	{
+  		
   		this.cvScatterDiagram.setClicking();
   	  cvOpic.setClicking();
   	  cvJRadioButtonDrag.setSelected(false); 
@@ -654,7 +678,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 
   void jSpinnerDistanceSD_ActionPerformed(ChangeEvent e)
   {
-  	cvScatterDiagram.setRectangleSize(Integer.parseInt(cvJSpinnerDistanceSD.getValue().toString()));
+  	cvScatterDiagram.setDistanceSD(Integer.parseInt(cvJSpinnerDistanceSD.getValue().toString()));
   	cvScatterDiagram.repaint();
   }
 }
