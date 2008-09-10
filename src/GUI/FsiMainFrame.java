@@ -298,6 +298,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 		/*Spinner for minimum distance*/
 		JPanel lvJPanelMinimumDistance = new JPanel();	
 	  cvJSpinnerDistanceMean.addChangeListener(this);
+	  cvJSpinnerDistanceMean.setValue(new Integer(15));
 	  lvJPanelMinimumDistance.setLayout(new BoxLayout(lvJPanelMinimumDistance, BoxLayout.Y_AXIS));
 	  lvJPanelMinimumDistance.setBorder(new TitledBorder("Distance from mean"));
 	 	lvJPanelMinimumDistance.setBackground(Color.LIGHT_GRAY);
@@ -488,6 +489,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  if(cvJCheckBoxClassify.isSelected())
 	  {
 		  this.cvScatterDiagram.setClassify(true);
+		  this.cvOpic.setClassify(true);
 		  this.cvScatterDiagram.repaint();
 	  }
 	  else
@@ -498,6 +500,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   		this.cvOpic.cvSelectedPixel=false;
   		repaint();
 		  this.cvScatterDiagram.setClassify(false);
+		  this.cvOpic.setClassify(false);
 		  this.cvScatterDiagram.repaint();
 	  }
   }
@@ -517,14 +520,20 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 //   	  this.cvScatterDiagram.resetScatterDiagramPixelsValues();
 //   	  this.cvScatterDiagram.setScatterDiagramPixelsValues();
 //   	 	cvScatterDiagram.repaint(); 
-	  	
+	  	 
+	  	 this.cvScatterDiagram.setSinglePoint(true);
+	  	 //this.cvOpic.setSelectedPixel(true);
+  		 this.cvScatterDiagram.setSelectedPixelsSD();
+  		 
+  		 
 	  	cvScatterDiagram.setWidth(this.cvOpic.getWidth());
 	  	cvScatterDiagram.setHeight(this.cvOpic.getHeight());
 	  	this.cvScatterDiagram.setWholePicture(true);
 	  	this.cvScatterDiagram.resetWholePicture();
 	  	this.cvScatterDiagram.updateWholePicture();
 	  	
-	  	cvScatterDiagram.repaint(); 
+	  	//cvScatterDiagram.repaint(); 
+	  	this.cvOpic.repaint();
 	  }
 	  else
 	  {
@@ -670,6 +679,8 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   void jSpinnerDistanceMean_ActionPerformed(ChangeEvent e)
   {
   	cvScatterDiagram.setRadium(Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString()));
+  	if (Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString())<0)
+  		this.cvJSpinnerDistanceMean.setValue(new Integer(0));
   	cvScatterDiagram.repaint();
   }
   

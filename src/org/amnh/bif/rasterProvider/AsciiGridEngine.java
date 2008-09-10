@@ -363,17 +363,17 @@ public class AsciiGridEngine {
 		/*
 		 * Since this is a helper function just set the size by hand, could read it from the grid
 		 */
-		EightBitProvider EBP = new EightBitProvider(7,256,256);
+		EightBitProvider EBP = new EightBitProvider(2,256,256);
 		
 		/*
 		 * Manually load all of the bands that we exported.
 		 */
-		for(int lvIterator = 0; lvIterator < 7; lvIterator++)
+		for(int lvIterator = 0; lvIterator < 2; lvIterator++)
 		{
-			AsciiGridEngine lvAGE = new AsciiGridEngine("/home/pete/devel/temp/band"+ (lvIterator+1) +".asc");
+			AsciiGridEngine lvAGE = new AsciiGridEngine("/home/roberto/Desktop/band"+ (lvIterator+1) +".asc");
 			lvAGE.loadGridData(EBP.cvData[lvIterator]);
 		}
-		EBP.write("/home/pete/devel/temp/7band_256x256_example.dat");
+		EBP.write("/home/roberto/Desktop/2band_256x256_example.dat");
 	}
 
 }

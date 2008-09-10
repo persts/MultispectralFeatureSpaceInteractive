@@ -59,10 +59,14 @@ java.awt.event.MouseMotionListener {
     /*Boolean that indicates whether there are selected pixels in the 
      * scatter diagram or not*/
     public  boolean cvSelectedPixel = false;
-    
+    /*Are we in classification mode?*/
+    private boolean cvClassify= false;
+    /*Did we get correctly the data from the source?*/
     private boolean cvDataReady;
     JCheckBox cvJCheckWholePicture;
     
+    int mierdax =0;
+    int mierday =0;
     public  OriginalPicture(ScatterDiagram theDiagram, JCheckBox theCheck)
     {
     	 this.addMouseListener(this);
@@ -72,9 +76,6 @@ java.awt.event.MouseMotionListener {
        this.cvSDiagram = theDiagram;
        cvJCheckWholePicture = theCheck;
        cvEBP = new EightBitProvider();
-       //TODO: This needs to check to see if the read was successful, if not it should set a flag indicating
-       //that the class data is not valid. All function should check this flag to make sure they have valid
-       //data to work with. This will prevent NullPointerExceptions
        cvDataReady = cvEBP.read("7band_256x256_example.dat");
     }
 
@@ -161,6 +162,11 @@ java.awt.event.MouseMotionListener {
     	return cvBlueBand;
     }
     
+    public void setClassify(boolean theValue)
+    {
+    	cvClassify = theValue;
+    }
+    
     public void setSelectedPixels()
     {
     	cvSelectedPixels = new boolean [getHeight()][getWidth()];
@@ -198,9 +204,14 @@ java.awt.event.MouseMotionListener {
     	 if (cvClicking)
     	 {  
     		 cvPolygon.reset();
-    		 cvPolygon.addPoint(e.getX(), e.getY());
+    		 
+    		 mierdax=e.getX();
+    			 mierday=e.getY();
+    		//System.out.println("clicking opic. X"+e.getX()+"y"+e.getY());
     		 
     		 setSelectedPixels();
+    		 //we create the polygon just to paint the point
+    		 cvPolygon.addPoint(e.getX(), e.getY());
     		//We can not create a polygon with a single point
     		 this.cvSelectedPixels[e.getX()][e.getY()]=true;
     		 cvSDiagram.setSinglePoint(true);
@@ -212,7 +223,7 @@ java.awt.event.MouseMotionListener {
       	 repaint();
       	 
     	 }
-    	 else if (cvDragging)
+    	 else if (cvDragging && !cvClassify)
     	 {
     		 if(e.getClickCount() == 2)
     		 {
@@ -228,7 +239,7 @@ java.awt.event.MouseMotionListener {
 
     public void mousePressed(MouseEvent e) 
     {	
-    	if (cvDragging)
+    	if (cvDragging & !cvClassify)
     	{
     		cvPolygon.reset();
     		this.cvSDiagram.resetScatterDiagramPixelsValues();
@@ -239,7 +250,7 @@ java.awt.event.MouseMotionListener {
     }
 
     public void mouseReleased(MouseEvent e) {
-    	if (cvDragging)
+    	if (cvDragging && !cvClassify)
     	{
     		int lvLastx =cvPolygon.npoints>0? cvPolygon.xpoints[0]: 0;
     		int lvLasty =cvPolygon.npoints>0? cvPolygon.ypoints[0]: 0;
@@ -271,7 +282,7 @@ java.awt.event.MouseMotionListener {
 
     public void mouseDragged(MouseEvent e) 
     {
-    	if (cvDragging)
+    	if (cvDragging && !cvClassify)
     	{
     		cvPolygon.addPoint(e.getX(), e.getY());
       	penOperation(e);
@@ -307,36 +318,43 @@ java.awt.event.MouseMotionListener {
     	//Fill in the array pixel
     	int i = 0;
     	if (cvDataReady)
-    	{
-    	for(int lvRowRunner = 0; lvRowRunner < cvEBP.cvData[0].length; lvRowRunner++) 
+    	{/*SUCESOS PARANORMALES QUE EL HOMBRE NUNCA LLEGARA A COMPRENDER*/
+    	for(int lvColumnRunner = 0; lvColumnRunner < cvEBP.cvData[0][0].length; lvColumnRunner++)	
   		{
-  			for(int lvColumnRunner = 0; lvColumnRunner < cvEBP.cvData[0][0].length; lvColumnRunner++)
+    		for(int lvRowRunner = 0; lvRowRunner < cvEBP.cvData[0].length; lvRowRunner++) 
   			{
   				pictureBandX[lvRowRunner][lvColumnRunner]=cvEBP.getInt(cvBandX,lvRowRunner,lvColumnRunner);
   				pictureBandY[lvRowRunner][lvColumnRunner]=cvEBP.getInt(cvBandY,lvRowRunner,lvColumnRunner);
+  				
   				//Filling in every pixel: Red is BandX and Green is BandY
   				/*We just draw the two bands*/
   				if(cvSelectedPixel == false )
   				{
+//  					if(cvSelectedPixels!= null )
+//  						if( cvSelectedPixels[lvRowRunner][lvColumnRunner])
+//  							System.out.println("X:"+pictureBandX[lvRowRunner][lvColumnRunner] +"Y:"+pictureBandY[lvRowRunner][lvColumnRunner]);
+  					
   				  pixels[i++]=(cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 255;
   				}
   				else 
   				{
   					/*If there are selected pixels in the scatter diagram, we draw them yellow*/
-  				
   					
+//  					if(cvSelectedPixels!= null & cvSelectedPixels[lvRowRunner][lvColumnRunner])
+//  						System.out.println("X:"+pictureBandX[lvRowRunner][lvColumnRunner] +"Y:"+pictureBandY[lvRowRunner][lvColumnRunner]);
   					int lvPixelValue=(cvEBP.getInt(cvRedBand,lvRowRunner,lvColumnRunner))<<24 | (cvEBP.getInt(cvGreenBand,lvRowRunner,lvColumnRunner)) << 16 | ((cvEBP.getInt(cvBlueBand,lvRowRunner,lvColumnRunner)) << 8) | 255;
   					pixels[i++] = cvSelectedPixelsSD[pictureBandX[lvRowRunner][lvColumnRunner]][pictureBandY[lvRowRunner][lvColumnRunner]]?  255<<24 | 255 << 16 | (0 << 8) | 255  :lvPixelValue;
-  					
+  					//System.out.println("valor del primer pixel100"+pictureBandX[0][100]+"--"+pictureBandY[0][100]);
   				}
   			}	
   		}
+    	
     }
     else
     	g2.drawString("No data available", 110, 125);
     	
     // And then, some magical steps which I don't understand
-    sample = colormodel.createCompatibleSampleModel(w, h);
+    sample = colormodel.createCompatibleSampleModel(w, h); 
     data = new DataBufferInt(pixels, w * h);
     raster = WritableRaster.createWritableRaster(sample, data, new Point(0,0));
     //We just built the image
@@ -348,24 +366,29 @@ java.awt.event.MouseMotionListener {
     if(cvClicking && cvPolygon.npoints>0)
     {
    		g.setColor(Color.CYAN);
+   		System.out.println("opicXclick"+pictureBandX[cvPolygon.xpoints[0]][cvPolygon.ypoints[0]]+"Y"+pictureBandY[cvPolygon.xpoints[0]][cvPolygon.ypoints[0]]);
    		//for (int cont=0; cont<cvPolygon.npoints; cont++)
    		g.fillOval(this.cvPolygon.xpoints[0]-2, this.cvPolygon.ypoints[0]-2, 4, 4);
     }
     if( cvSelectedPixel && cvClicking)
     {
     if(cvDataReady)
-    	for (int lvRows=0; lvRows<cvEBP.cvData[0].length;lvRows++)
-    		for (int lvColumns=0; lvColumns<cvEBP.cvData[0][0].length;lvColumns++)
+    	for (int lvRows=0; lvRows<pictureBandX.length;lvRows++)
+    		for (int lvColumns=0; lvColumns<pictureBandX[0].length;lvColumns++)
     			{
+    			
     				if(cvSelectedPixelsSD[pictureBandX[lvRows][lvColumns]][pictureBandY[lvRows][lvColumns]])
     				{
+    					
+    					System.out.println("sdselected x"+pictureBandX[lvRows][lvColumns]+"y"+pictureBandY[lvRows][lvColumns]);
+    					//System.out.println("pintando valores X"+pictureBandX[lvRows][lvColumns]+"Y"+pictureBandY[lvRows][lvColumns]);
     		    	g.setColor(Color.YELLOW);
-    					g.fillOval(lvColumns-2,  lvRows-2, 4, 4);
+    					g.fillOval(lvRows-2,  lvColumns-2, 4, 4); /// OJOJOJOJOJOJO estaba al reves
     				}
     			}
     			
     	}
-    	
+    	//System.out.println("valor del primer pixel"+pictureBandX[0][255]+"--"+pictureBandY[0][255]);
     	//Setting up the Scatter diagram,  with the two bands
     	this.cvSDiagram.setPictureBandX(pictureBandX);
     	this.cvSDiagram.setPictureBandY(pictureBandY);

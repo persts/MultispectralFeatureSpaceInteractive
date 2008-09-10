@@ -3,12 +3,17 @@ package GUI;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-public class GraphicalEnvironment 
+import javax.swing.*;
+
+
+
+public class GraphicalEnvironment extends JApplet
 {
 
-  public GraphicalEnvironment() 
-  {
-    FsiMainFrame lvMainFrame = new FsiMainFrame();
+	
+	public void init()
+	{
+		FsiMainFrame lvMainFrame = new FsiMainFrame();
 
     //Centrar la ventana
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -25,9 +30,6 @@ public class GraphicalEnvironment
     lvMainFrame.setLocation((screenSize.width - lvMainFrameSize.width) / 2, (screenSize.height - lvMainFrameSize.height) / 2);
     lvMainFrame.validate();
     lvMainFrame.setVisible(true);
-  }
+	}
 
-  public static void main(String[] args) {
-    new GraphicalEnvironment();
-  }
 }
