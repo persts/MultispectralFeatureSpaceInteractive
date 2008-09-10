@@ -13,6 +13,9 @@ import Imagery.*;
 
 public class FsiMainFrame extends JFrame implements ActionListener, ChangeListener, ItemListener
 {
+	/* Current Version Number */
+	private static final String version = "1.0.0";
+	
 	String vcBandList[];
 	
  	JComboBox cvJComboBoxX; 	
@@ -581,7 +584,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 
   public void jMenuHelpAbout_actionPerformed(ActionEvent e) 
   {
-  	FsiAboutFrame dlg = new FsiAboutFrame(this);
+  	FsiAboutFrame dlg = new FsiAboutFrame(this, version);
     Dimension dlgSize = dlg.getPreferredSize();
     Dimension frmSize = getSize();
     Point loc = getLocation();

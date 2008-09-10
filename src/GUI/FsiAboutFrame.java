@@ -1,104 +1,74 @@
 package GUI;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.io.IOException;
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import edu.stanford.ejalbert.BrowserLauncher;
 
 
 
-
-public class FsiAboutFrame extends JDialog implements ActionListener 
+public class FsiAboutFrame extends JDialog implements HyperlinkListener
 {
 
-  JPanel panel1 = new JPanel();
-  JPanel panel2 = new JPanel();
-  JPanel insetsPanel1 = new JPanel();
-  JPanel insetsPanel2 = new JPanel();
-  JPanel insetsPanel3 = new JPanel();
-  JButton button1 = new JButton();
-  JLabel imageLabel = new JLabel();
-  JLabel label1 = new JLabel();
-  JLabel label2 = new JLabel();
-  JLabel label3 = new JLabel();
-  JLabel label4 = new JLabel();
-  ImageIcon image1 = new ImageIcon();
-  BorderLayout borderLayout1 = new BorderLayout();
-  BorderLayout borderLayout2 = new BorderLayout();
-  FlowLayout flowLayout1 = new FlowLayout();
-  GridLayout gridLayout1 = new GridLayout();
-  String product = "Space Interactive Tool";
-  String version = "1.0";
-  String comments1 = "Tool developed for the department of Biodiversity and Conservation";
-  String comments2 = "of the American Museum of Natural History";
-  
-  
-  public FsiAboutFrame(FsiMainFrame parent) 
+  public FsiAboutFrame(FsiMainFrame parent, String version) 
   {
-    super(parent);
-    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-    try {
-      init();
-    }
-    catch(Exception e) {
-      e.printStackTrace();
-    }
+  	String messageText = "<HTML><BODY>"+
+												"Version "+ version +" of the Feature Space Interactive<br>"+
+												"Written by Roberto Garcia-Yunta with contributions from Peter J. Ersts.<br>"+
+												"Feature Space concept by Ned Horning.<br><br>"+
+												"This application implements Eric Albert's BrowserLauncher class, which is know not to work on many linux systems.<br><br>"+
+												"Questions, comments, and bug reports can be submitted at: <BR>"+
+												"<a href=\"http://biodiversityinformatics.amnh.org/content.php?content=contact_us\">"+
+												"http://biodiversityinformatics.amnh.org/content.php?content=contact_us</a><br><br>"+
+												"This work was made possible by The Spanish Ministry of Science and Innovation, "+
+												"<a href=\"http://www.integrants.es/index.php\">INTEGRANTS</a> program, a nation-wide "+
+												"grant program to give Spanish university graduates the opportunity of carrying out "+
+												"internships in companies in the U.S. and Canada, with partial support from the "+
+												"<a HREF=\"http://cbc.amnh.org\">Center for Biodiversity and Conservation</a> at the "+
+												"<a HREF=\"http://amnh.org\">American Museum of Natural History</a>."+
+												"</BODY></HTML>";
+		setSize(435,600);
+		setTitle("About");
+		
+		getContentPane().setBackground(Color.WHITE);
+		setBackground(new Color(255,255,255));
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setLocation((int)parent.getLocationOnScreen().getX() + (parent.getWidth()/2) - (getWidth()/2), (int)parent.getLocationOnScreen().getY() + (parent.getHeight()/2) - (getHeight()/2));
+		
+		JEditorPane text = new JEditorPane();
+		text.setContentType("text/html");
+		text.addHyperlinkListener(this);
+		text.setText(messageText);
+		text.setCaretPosition(0);
+		text.setEditable(false);
+		JScrollPane textScrollPane = new JScrollPane(text);
+		textScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		JPanel logos = new JPanel(new FlowLayout(FlowLayout.CENTER, 25, 0));
+		logos.setBackground(new Color(255, 255, 255));
+		logos.add(new JLabel(new ImageIcon(this.getClass().getClassLoader().getResource("cbc-blue-sm.jpg"))));
+		
+		getContentPane().add(logos, BorderLayout.SOUTH);
+		getContentPane().add(textScrollPane, BorderLayout.CENTER);
+		setVisible(true);
+
   }
 
+  /**
+	 * Required method to implement HyperlinkListener
+	 */
+	public void hyperlinkUpdate(HyperlinkEvent evt) 
+	{
+		if(evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) 
+		{
+			try 
+			{
+				BrowserLauncher.openURL(evt.getURL().toString());
+			}
+			catch (IOException e) {}
+		}
+	}
 
-  private void init() throws Exception  
-  {
-    image1 = new ImageIcon(GUI.FsiMainFrame.class.getResource("amnh.gif"));
-    imageLabel.setIcon(image1);
-    this.setTitle("About Space Interactive Tool");
-    panel1.setLayout(borderLayout1);
-    panel2.setLayout(borderLayout2);
-    insetsPanel1.setLayout(flowLayout1);
-    insetsPanel2.setLayout(flowLayout1);
-    insetsPanel2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    gridLayout1.setRows(4);
-    gridLayout1.setColumns(1);
-    label1.setText(product);
-    label2.setText(version);
-    label3.setText(comments1);
-    label4.setText(comments2);
-    insetsPanel3.setLayout(gridLayout1);
-    insetsPanel3.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 10));
-    button1.setText("OK");
-    button1.addActionListener(this);
-    insetsPanel2.add(imageLabel, null);
-    panel2.add(insetsPanel2, BorderLayout.WEST);
-    this.getContentPane().add(panel1, null);
-    insetsPanel3.add(label1, null);
-    insetsPanel3.add(label2, null);
-    insetsPanel3.add(label3, null);
-    insetsPanel3.add(label4, null);
-    panel2.add(insetsPanel3, BorderLayout.CENTER);
-    insetsPanel1.add(button1, null);
-    panel1.add(insetsPanel1, BorderLayout.SOUTH);
-    panel1.add(panel2, BorderLayout.NORTH);
-    setResizable(true);
-  }
-
-
-  protected void processWindowEvent(WindowEvent e) 
-  {
-    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
-      cancel();
-    }
-    super.processWindowEvent(e);
-  }
-
-
-  void cancel() 
-  {
-    dispose();
-  }
-
-
-  public void actionPerformed(ActionEvent e) 
-  {
-    if (e.getSource() == button1) {
-      cancel();
-    }
-  }
 }
