@@ -18,8 +18,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 	  */
   private int cvAlgorithm = 1;
   
-  /*
-   * */
+  /*Parameters for the thre different algorithms*/
 	private int cvRadium;
 	private int cvRectangleSize; 
 	private int cvDistanceSD;
@@ -77,7 +76,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
     	{
     		cvScatterDiagramPixelsValues[i][j]=0;
     	}
-    }
+   }
 
 
    public void setOPicture(OriginalPicture thePicture)
@@ -98,6 +97,11 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
     	setSelectedPixelsSD();
     	cvOPic.setSelectedPixelsSD(this.cvSelectedPixelsSD);
     	repaint();
+    }
+    
+    public Polygon getPolygon()
+    {
+    	return this.cvPolygon;
     }
     
     public void setDragging ()
@@ -194,12 +198,11 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
         	{
         		if(cvSelectedPixels!= null)
         			
-        			if(  cvSelectedPixels[i][j] == true)
+        			if(cvSelectedPixels[i][j])
         			{
         				//&& cvScatterDiagramPixelsValues[i][j]<13
         				cvScatterDiagramPixelsValues[cvPictureBandX[i][j]][cvPictureBandY[i][j]]++;
-        				//System.out.println("in SD, i:"+cvPictureBandX[i][j]+" j:"+cvPictureBandY[i][j]);
-        				if(/*this.cvWholePicture & */this.cvClicking & cvSinglePoint)
+        				if(this.cvClicking & cvSinglePoint)
         				{
         					cvSDPixelsValuesWholePicture[cvPictureBandX[i][j]][cvPictureBandY[i][j]]= -10;
         					cvSinglePoint =false;
@@ -285,8 +288,8 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
      
       if(cvWholePicture)
   		{
-      	 lvTheCrossX= -1;
-      	 lvTheCrossY= -1;
+      	lvTheCrossX= -1;
+      	lvTheCrossY= -1;
       	for(int i=0; i<256; i++)
         	for (int j=0; j<256; j++)
         	{
@@ -302,9 +305,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
       					}
       					else
       					{
-      						//g.setColor(Color.CYAN);
-      						//g.fillOval(i+15-2, 255-j-2, 4, 4);
-      						g2.setColor(new Color(Color.HSBtoRGB(0.6f+((float)cvSDPixelsValuesWholePicture[i][j]/30), 1,1)));
+      					 g2.setColor(new Color(Color.HSBtoRGB(0.6f+((float)cvSDPixelsValuesWholePicture[i][j]/30), 1,1)));
          				 g2.drawLine(i+15,255-j,i+15,255-j);
          				 lvMeanX+= i*cvScatterDiagramPixelsValues[i][j];
          				 lvMeanY+= j*cvScatterDiagramPixelsValues[i][j];
@@ -319,18 +320,8 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
       				 lvMeanY+= j*cvScatterDiagramPixelsValues[i][j];
       				 lvNPoints+=cvScatterDiagramPixelsValues[i][j];
       				}
-      				//g2.drawLine(cvPictureBandX[i][j]+15, 255-cvPictureBandY[i][j], cvPictureBandX[i][j]+15, 255-cvPictureBandY[i][j]);
       			}
-        		
         	}
-//      	if(lvTheCrossX!=-1)
-//      	{
-//      		g2.setColor(Color.RED);
-//      		//g2.drawLine(i+15,255-j,100,100);
-//      		g2.drawLine(lvTheCrossX+15-5, 255-lvTheCrossY, lvTheCrossX+20, 255-lvTheCrossY);
-//      		g2.drawLine(lvTheCrossX+15, 255-lvTheCrossY-5, lvTheCrossX+15, 255-lvTheCrossY+5);
-//      	}
-      	
   		}
   		else //not whole picture
   		{
@@ -340,14 +331,6 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
   					{
   						if(cvScatterDiagramPixelsValues[i][j] != 0)
   						{
-  							//if(cvClicking)
-  							//{
-  							//	g.setColor(Color.CYAN);
-  							//	g.fillOval(i+15-2, 255-j-2, 4, 4);
-  							//}
-  							//else
-  							//{
-  							
   								g2.setColor(new Color(Color.HSBtoRGB(0.6f+((float)cvScatterDiagramPixelsValues[i][j]/30), 1,1)));
   								g2.drawLine(i+15,255-j,i+15,255-j);
   								lvMeanX+= i*cvScatterDiagramPixelsValues[i][j];
@@ -361,30 +344,26 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
   	      						lvTheCrossX=i;
   	      						lvTheCrossY=j;	
   	      					}
-  	      				}
-  								
-  							//}
-      				//g2.drawLine(cvPictureBandX[i][j]+15, 255-cvPictureBandY[i][j], cvPictureBandX[i][j]+15, 255-cvPictureBandY[i][j]);
-      			}
-      	
-      	}  
-  		}
+  	      				}	
+  						}
+  					}  
+  			}
       
      	if(lvTheCrossX!=-1)
     	{
     		g2.setColor(Color.RED);
-    		//g2.drawLine(i+15,255-j,100,100);
     		g2.drawLine(lvTheCrossX+15-5, 255-lvTheCrossY, lvTheCrossX+20, 255-lvTheCrossY);
     		g2.drawLine(lvTheCrossX+15, 255-lvTheCrossY-5, lvTheCrossX+15, 255-lvTheCrossY+5);
     	}
       
       //Drawing the polygon the user draw
-      g.setColor(Color.BLACK);
+      
+      //g2.setStroke(new BasicStroke(2));
+      g2.setColor(Color.RED);
       g2.drawPolygon(this.cvPolygon);
       
       if(cvClicking && cvPolygon.npoints>0)
-    	{
-      	
+    	{	
    		 g.setColor(Color.RED);
    		 for (int cont=0; cont<cvPolygon.npoints; cont++)
    			 g.fillOval(this.cvPolygon.xpoints[cont]-2, this.cvPolygon.ypoints[cont]-2, 4, 4);
@@ -397,31 +376,22 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 				switch(cvAlgorithm){
 					case 1: /*Minimum Distance */
 					{
-						//cvRadium
 						if(lvMeanX!=0 && lvMeanY!=0)
 						{
 							g2.setColor(Color.RED);
 							g2.drawLine(lvMeanX+15-5, 255-lvMeanY, lvMeanX+20, 255-lvMeanY);
 							g2.drawLine(lvMeanX+15, 255-lvMeanY-5, lvMeanX+15, 255-lvMeanY+5);
 							g2.setStroke(new BasicStroke(2));
-							//g2.drawOval(lvMeanX+15-cvRadium, 255-lvMeanY-cvRadium, cvRadium*2, cvRadium*2);
-							
 							g2.translate(lvMeanX+15, 255-lvMeanY);
 							Shape shape = new Ellipse2D.Float(0-cvRadium, 0-cvRadium, cvRadium*2+2, cvRadium*2+2);
 							g2.draw(shape);
-							
-							
 							
 							for(int i=0; i< 256;i++)
 				    		for(int j=0; j< 256;j++)
 				    			cvSelectedPixelsSD[i][j]= shape.contains(i-lvMeanX, lvMeanY-j);
 							cvOPic.setSelectedPixelsSD(this.cvSelectedPixelsSD);
 							this.cvOPic.setSelectedPixel(true);
-			     	  cvOPic.repaint();
-			     	  
-			     	
-			     	 
-			     	  
+			     	  cvOPic.repaint();  
 						}
 					}
 					break;
@@ -436,8 +406,10 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 								if(cvSelectedPixels!= null)
 									if(  cvSelectedPixels[i][j] == true)
 									{
+										/*Variance of X and Y*/
 										lvVarX+= Math.pow((cvPictureBandX[i][j]-lvMeanX),2); 
 										lvVarY+= Math.pow((cvPictureBandY[i][j]-lvMeanY),2); 
+										/*Covariance*/
 										lvCoVarXY+=(cvPictureBandX[i][j]-lvMeanX)*(cvPictureBandY[i][j]-lvMeanY);
 									}
 							}
@@ -445,7 +417,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 						lvVarY/=lvNPoints;
 						lvCoVarXY/=lvNPoints;
 						double [][]lvCovarianceMatrix={{lvVarX,lvCoVarXY},{lvCoVarXY,lvVarY}};
-      	
+						/*Short and long eigen values*/
 						double lvLambdaL= (0.5)*(lvCovarianceMatrix[0][0]+lvCovarianceMatrix[1][1]+Math.sqrt(Math.pow(lvCovarianceMatrix[0][0]-lvCovarianceMatrix[1][1], 2)+4*lvCovarianceMatrix[0][1]*lvCovarianceMatrix[0][1]));
 						double lvLambdaS= (0.5)*(lvCovarianceMatrix[0][0]+lvCovarianceMatrix[1][1]-Math.sqrt(Math.pow(lvCovarianceMatrix[0][0]-lvCovarianceMatrix[1][1], 2)+4*lvCovarianceMatrix[0][1]*lvCovarianceMatrix[0][1]));
 
@@ -456,8 +428,10 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 						Matrix A = new Matrix(lvCovarianceMatrix);
 						EigenvalueDecomposition e = A.eig();
 						Matrix V = e.getV();
+						/*Array of eigen vectors*/
 						double[][]v=V.getArray();
 
+						/*The rotation of the ellipse is given by the eigen vectors*/
 						double rotation = -Math.abs(Math.atan2(v[0][0],v[0][1]));
       	 
 						g2.translate(lvMeanX+15, 255-lvMeanY);
@@ -465,7 +439,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
      		
 						g2.setStroke(new BasicStroke(2));
 						g2.setColor(Color.RED);
-						
+						/*The size of the two axis of the ellipse are given by the short and long eigenvalues*/
 						Shape shape = new Ellipse2D.Float(-(int)lvRoot/2, -(int)lvRootShort/2, (int)lvRoot+2, (int)lvRootShort+2);
 
 						g2.draw(shape);
@@ -475,8 +449,6 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 						cvOPic.setSelectedPixelsSD(this.cvSelectedPixelsSD);
 						this.cvOPic.setSelectedPixel(true);
 		     	  cvOPic.repaint();
-      	
-
 					}
 					break;
 					case 3: /* Parallelepiped */
@@ -484,7 +456,6 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 						g2.setColor(Color.RED);
 						g2.setStroke(new BasicStroke(2));
 						g2.translate(cvPictureBandXMin+15 - cvRectangleSize, (255-cvPictureBandYMax) - cvRectangleSize);
-						//g2.drawRect(cvPictureBandXMin+15 - cvRectangleSize, (255-cvPictureBandYMax) - cvRectangleSize, cvPictureBandXMax-cvPictureBandXMin + cvRectangleSize*2, cvPictureBandYMax-cvPictureBandYMin + cvRectangleSize*2);	
 					  Shape shape= new Rectangle2D.Float(0, 0, cvPictureBandXMax-cvPictureBandXMin + cvRectangleSize*2+2, cvPictureBandYMax-cvPictureBandYMin + cvRectangleSize*2+2);
 					  g2.draw(shape);
 					  for(int i=0; i< 256;i++)
@@ -504,8 +475,8 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 		public void mouseClicked(MouseEvent e) 
 		{
 			 if (cvClicking)
-    	 {   cvSinglePoint=true;
-				 
+    	 {   
+				 cvSinglePoint=true;
     		 cvPolygon.reset();
     		 cvPolygon.addPoint(e.getX(), e.getY());
     		 this.cvOPic.setSelectedPixel(true);
@@ -514,35 +485,24 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
     		 if(e.getX()>15 && e.getX()<=270 && e.getY()<256)
     		 {
     			 cvSelectedPixelsSD[e.getX()-15][255-e.getY()]= true;
-    			 System.out.println("x"+(e.getX()-15)+"y"+(255-e.getY()));
-    			 //cvSelectedPixelsSD[117][49]= true;
-    			 
     			 cvOPic.setSelectedPixelsSD(this.cvSelectedPixelsSD);
     			 cvOPic.repaint();
     		 }
     	 }
-			 
-
 		}
 
-
-		
 		public void mouseEntered(MouseEvent arg0) 
 		{
 			// TODO Auto-generated method stub
 			
 		}
 
-
-		
 		public void mouseExited(MouseEvent arg0) 
 		{
 			// TODO Auto-generated method stub
 			
 		}
 
-
-		
 		public void mousePressed(MouseEvent arg0) 
 		{
 			// TODO Auto-generated method stub
@@ -553,12 +513,11 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
     	}
 		}
 
-
-		
 		public void mouseReleased(MouseEvent arg0) 
 		{
 			if (cvDragging && !cvClassify)
     	{
+				/*When we release we draw a line from the last to the first point*/
     		int lvLastx =cvPolygon.npoints>0? cvPolygon.xpoints[0]: 0;
     		int lvLasty =cvPolygon.npoints>0? cvPolygon.ypoints[0]: 0;
     		int lvFirstx=cvPolygon.npoints>0? cvPolygon.xpoints[cvPolygon.npoints-1] :0;
@@ -575,15 +534,9 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
      	  cvOPic.repaint();
      	 
      	  this.cvOPic.setSelectedPixel(true);
-//     	 for(int i =0; i<256; i++)
-//     		for(int j =0; j<256; j++)
-//     			if(cvSelectedPixelsSD[i][j])
-//     				System.out.println(i+"-"+j);
      	}	
 		}
 
-
-		
 		public void mouseDragged(MouseEvent e) 
 		{
 			
@@ -594,9 +547,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
     	}
 			
 		}
-
-
-		@Override
+		
 		public void mouseMoved(MouseEvent arg0) 
 		{
 			// TODO Auto-generated method stub
@@ -606,6 +557,9 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 		 public void penOperation(MouseEvent e) 
 	    {
 	       Graphics g  = this.getGraphics();
+	       
+	       g.setColor(Color.RED);
+					
 	      
 	       /*
 	         In initial state setup default values
@@ -668,7 +622,6 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 	       cvInitialPen = true;
 	    }
 
- 
 }
 
 

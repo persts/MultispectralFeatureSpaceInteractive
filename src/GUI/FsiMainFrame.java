@@ -2,7 +2,6 @@ package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.ChangeEvent;
@@ -85,7 +84,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     
     this.setTitle("Feature Space Interactive");
     cvStatusBar.setBorder(BorderFactory.createEtchedBorder());
-    cvStatusBar.setText("Not ready yet... ");
+    cvStatusBar.setText("amnh");
     
     cvJMenuFile.setText("File");
     
@@ -102,9 +101,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     cvJMenuHelpAbout.setText("About...");
     cvJMenuHelpAbout.addActionListener(this);
     
-
     cvJMenuHelp.add(cvJMenuHelpAbout);
-    
     cvJMenuBar1.add(cvJMenuFile);
     cvJMenuBar1.add(cvJMenuHelp);
     this.setJMenuBar(cvJMenuBar1);
@@ -223,9 +220,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	lvConstraints.gridy = 3;
   	lvCenterPanel.add(lvJPanelSelectionMethod, lvConstraints);
   	
-  	
-
- 
   	/*
   	 * Scatter plot display type
   	 */
@@ -264,25 +258,8 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 		lvConstraints.gridx = 0;
 	  lvConstraints.gridy = 6;
 	  lvJPanelSelectionAlgorithm.add(cvJCheckBoxClassify, lvConstraints);
-  	
-		/*JSeparator*/
-//  	lvConstraints.fill = GridBagConstraints.HORIZONTAL;
-//  	lvConstraints.anchor = GridBagConstraints.SOUTH;
-//  	lvConstraints.gridwidth = 0;
-//  	lvConstraints.gridheight = 1;
-//		lvConstraints.gridx = 0;
-//  	lvConstraints.gridy = 5;
-//  	JSeparator lvSeparator = new JSeparator(JSeparator.HORIZONTAL);
-//  	lvCenterPanel.add(lvSeparator,lvConstraints);
-//  	lvSeparator.setPreferredSize(new Dimension(500,10));
-//  	 //lvCenterPanel.getPreferredSize().height)
 
-  	
-		
-		
-
-			
-			/*Radio button minimum distance*/
+		/*Radio button minimum distance*/
 		cvJRadioButtonMinDist.setText("Minimum distance");
 		cvJRadioButtonMinDist.setBackground(Color.LIGHT_GRAY);
 		cvJRadioButtonMinDist.addActionListener(this);
@@ -311,8 +288,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  lvConstraints.gridy = 8;
 	  lvJPanelSelectionAlgorithm.add(lvJPanelMinimumDistance, lvConstraints);
 	    	
-	    
-	  	
 	  /*radio button maximum likelihood*/
 	  cvJRadioButtonMaxLike.addActionListener(this);
 	  cvJRadioButtonMaxLike.setText("Maximum likelihood");
@@ -367,38 +342,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  lvConstraints.gridy = 8;
 	  lvJPanelSelectionAlgorithm.add(lvJPanelParallelepiped, lvConstraints);
 	  	
-	  
-	 		
-	  	/*
-   
-    cvJSplitPane1.setOrientation(JSplitPane.VERTICAL_SPLIT);
-    cvJSplitPane1.setBorder(null);
-    cvJSplitPane1.setDividerSize(6);
-    cvJSplitPane1.setOneTouchExpandable(true);
-    lvJPanelScatterPlotControls.setLayout(null);
-    lvJPanelScatterPlotControls.setBackground(Color.white);
-    lvJPanelScatterPlotControls.addMouseListener(new Frame_jPanel2_mouseAdapter(this));
-    
-    cvContentPane.setBorder(null);
-  
-    
-
-    cvJPanel1.add(cvJSplitPane1, null);
-    cvJSplitPane1.add(lvJPanelScatterPlotControls, JSplitPane.LEFT);
-    cvJSplitPane1.add(cvJPanel3, JSplitPane.RIGHT);
-   
-    cvJSplitPane1.setDividerLocation(400);
-    lvJPanelScatterPlotControls.setBorder(BorderFactory.createEtchedBorder());
-
-    cvJPanelSelectMethod.setBackground(Color.white);
-    
-    lvJPanelScatterPlotControls.add(cvJPanelSelectMethod);
-    cvJPanelSelectMethod.setBounds(305,325,250,53);
-   
-   	
-    
-   	
-   	*/
   }
 
   public void actionPerformed(ActionEvent evt) {
@@ -438,8 +381,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
       }
   }
 
-
-  
   public void stateChanged(ChangeEvent evt) 
 	{
 	  Object obj = evt.getSource();
@@ -490,6 +431,9 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  {
 		  this.cvScatterDiagram.setClassify(true);
 		  this.cvOpic.setClassify(true);
+		  /*Delete the polygon in case it was drawn before*/
+		  this.cvOpic.getPolygon().reset();
+		  this.cvScatterDiagram.getPolygon().reset();
 		  this.cvScatterDiagram.repaint();
 		  this.cvJRadioButtonPS.setEnabled(false);
 		  this.cvJRadioButtonDrag.setEnabled(false);
@@ -513,38 +457,17 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   {
 	  if (cvJCheckBoxWholeImage.isSelected())
 	  {
-//		  boolean [][] lvSelectedPixels = new boolean [cvOpic.getHeight()][cvOpic.getWidth()];
-//		  for(int i=0; i< cvOpic.getHeight();i++)
-//			  for(int j=0; j< cvOpic.getWidth();j++)
-//		    	lvSelectedPixels[i][j]=true;
-//	   	 
-//		  cvScatterDiagram.setSelectedPixels(lvSelectedPixels);
-//   	 	cvScatterDiagram.setHeight(this.cvOpic.getHeight());
-//   	 	cvScatterDiagram.setWidth(this.cvOpic.getWidth());
-//   	  this.cvScatterDiagram.resetScatterDiagramPixelsValues();
-//   	  this.cvScatterDiagram.setScatterDiagramPixelsValues();
-//   	 	cvScatterDiagram.repaint(); 
-	  	 
-	  	 this.cvScatterDiagram.setSinglePoint(true);
-	  	 //this.cvOpic.setSelectedPixel(true);
-  		 this.cvScatterDiagram.setSelectedPixelsSD();
-  		 
-  		 
+	  	this.cvScatterDiagram.setSinglePoint(true);
+  		this.cvScatterDiagram.setSelectedPixelsSD();
 	  	cvScatterDiagram.setWidth(this.cvOpic.getWidth());
 	  	cvScatterDiagram.setHeight(this.cvOpic.getHeight());
 	  	this.cvScatterDiagram.setWholePicture(true);
 	  	this.cvScatterDiagram.resetWholePicture();
 	  	this.cvScatterDiagram.updateWholePicture();
-	  	
-	  	//cvScatterDiagram.repaint(); 
 	  	this.cvOpic.repaint();
 	  }
 	  else
 	  {
-//		  cvScatterDiagram.setSelectedPixels(this.cvOpic.getSelectedPixels());
-//	   	this.cvScatterDiagram.resetScatterDiagramPixelsValues();
-//	   	this.cvScatterDiagram.setScatterDiagramPixelsValues();
-//	   	cvScatterDiagram.repaint();
 	  	this.cvScatterDiagram.setWholePicture(false);
 	  	cvScatterDiagram.repaint(); 
 	  } 
@@ -554,27 +477,14 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   {
   	this.cvScatterDiagram.setBandX(cvJComboBoxX.getSelectedIndex());
   	this.cvOpic.setBandX(cvJComboBoxX.getSelectedIndex());
-  	
-  	//this.cvScatterDiagram.resetWholePicture();
-  	
-  	this.cvOpic.repaint();
-  	
-  	//this.cvScatterDiagram.updateWholePicture();
-  	//cvScatterDiagram.repaint(); 	 
+  	this.cvOpic.repaint(); 
   }
   
   void jComboBoxY_mouseClicked(ItemEvent e) 
   {  
   	this.cvScatterDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
- 
   	this.cvOpic.setBandY(cvJComboBoxY.getSelectedIndex());
-  	
-  	//this.cvScatterDiagram.resetWholePicture();
-  	
   	this.cvOpic.repaint();
-  	
-  	//this.cvScatterDiagram.updateWholePicture();
-  	//cvScatterDiagram.repaint(); 	
   }
   
   public void jMenuFileExit_actionPerformed(ActionEvent e) 
@@ -584,7 +494,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   
   public void jMenuBandsSelection_actionPerformed(ActionEvent evt)
   {
-	  
 	  FsiRGBBandSelectionFrame frmSel = new FsiRGBBandSelectionFrame(this);
 	  Dimension dlgSize = frmSel.getPreferredSize();
 	  Dimension frmSize = getSize();
@@ -616,13 +525,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     }
   }
 
-
-  void jPanel2_mouseClicked(MouseEvent e) 
-  {
-  	
-  }
-
-
   void jRadioButtonPS_ActionPerformed(ActionEvent e)
   {
   	if (cvJRadioButtonPS.isSelected())
@@ -633,8 +535,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	  cvJRadioButtonDrag.setSelected(false); 
   	}
   }
-  	
-  	
+  	 	
   void jRadioButtonDrag_ActionPerformed(ActionEvent e)
   {
   	if (cvJRadioButtonDrag.isSelected())
@@ -676,7 +577,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   		this.cvScatterDiagram.setAlgorithm(1);
   		cvScatterDiagram.setRadium(Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString()));
   		cvScatterDiagram.repaint();
-  	
   	}
   }
 
@@ -700,21 +600,4 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	cvScatterDiagram.repaint();
   }
 }
-
-
-class Frame_jPanel2_mouseAdapter extends java.awt.event.MouseAdapter 
-{
-  FsiMainFrame adaptee;
-
-  Frame_jPanel2_mouseAdapter(FsiMainFrame adaptee) 
-  {
-    this.adaptee = adaptee;
-  }
-  public void mouseClicked(MouseEvent e) 
-  {
-    adaptee.jPanel2_mouseClicked(e);
-  }
-}
-
-
 

@@ -2,7 +2,6 @@ package GUI;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import javax.swing.*;
 
 
@@ -15,7 +14,7 @@ public class GraphicalEnvironment extends JApplet
 	{
 		FsiMainFrame lvMainFrame = new FsiMainFrame();
 
-    //Centrar la ventana
+    //Center the window
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     Dimension lvMainFrameSize = lvMainFrame.getSize();
     
