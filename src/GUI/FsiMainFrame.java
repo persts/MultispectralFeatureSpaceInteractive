@@ -491,9 +491,13 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 		  this.cvScatterDiagram.setClassify(true);
 		  this.cvOpic.setClassify(true);
 		  this.cvScatterDiagram.repaint();
+		  this.cvJRadioButtonPS.setEnabled(false);
+		  this.cvJRadioButtonDrag.setEnabled(false);
 	  }
 	  else
 	  {
+	  	this.cvJRadioButtonPS.setEnabled(true);
+	  	this.cvJRadioButtonDrag.setEnabled(true);
 		  this.cvOpic.getPolygon().reset();
   		this.cvScatterDiagram.resetScatterDiagramPixelsValues();
   		this.cvScatterDiagram.setScatterDiagramPixelsValues();

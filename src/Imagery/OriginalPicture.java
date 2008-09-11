@@ -172,7 +172,7 @@ java.awt.event.MouseMotionListener {
     	cvSelectedPixels = new boolean [getHeight()][getWidth()];
     	for(int i=0; i< this.getHeight();i++)
     		for(int j=0; j< this.getWidth();j++)
-    			cvSelectedPixels[i][j]=cvPolygon.contains(i, j);		
+    			cvSelectedPixels[i][j]=cvPolygon.contains(j, i);		
     }
     
     public void setSelectedPixelsSD(boolean theSelectedPixelsSD [][])
@@ -319,10 +319,10 @@ java.awt.event.MouseMotionListener {
     	int i = 0;
     	if (cvDataReady)
     	{/*SUCESOS PARANORMALES QUE EL HOMBRE NUNCA LLEGARA A COMPRENDER*/
-    	for(int lvColumnRunner = 0; lvColumnRunner < cvEBP.cvData[0][0].length; lvColumnRunner++)	
-  		{
-    		for(int lvRowRunner = 0; lvRowRunner < cvEBP.cvData[0].length; lvRowRunner++) 
-  			{
+	  		for(int lvRowRunner = 0; lvRowRunner < cvEBP.cvData[0].length; lvRowRunner++) 
+				{
+		    	for(int lvColumnRunner = 0; lvColumnRunner < cvEBP.cvData[0][0].length; lvColumnRunner++)	
+		  		{
   				pictureBandX[lvRowRunner][lvColumnRunner]=cvEBP.getInt(cvBandX,lvRowRunner,lvColumnRunner);
   				pictureBandY[lvRowRunner][lvColumnRunner]=cvEBP.getInt(cvBandY,lvRowRunner,lvColumnRunner);
   				
