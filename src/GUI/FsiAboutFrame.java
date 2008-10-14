@@ -18,14 +18,14 @@ public class FsiAboutFrame extends JDialog implements HyperlinkListener
 												"Version "+ version +" of the Feature Space Interactive<br>"+
 												"Written by Roberto Garcia-Yunta with contributions from Peter J. Ersts.<br>"+
 												"Feature Space concept by Ned Horning.<br><br>"+
-												"This application implements Eric Albert's BrowserLauncher class, which is know not to work on many linux systems.<br><br>"+
+												"This application implements Eric Albert's BrowserLauncher class, which is known not to work on many linux systems.<br><br>"+
 												"Questions, comments, and bug reports can be submitted at: <BR>"+
 												"<a href=\"http://biodiversityinformatics.amnh.org/content.php?content=contact_us\">"+
 												"http://biodiversityinformatics.amnh.org/content.php?content=contact_us</a><br><br>"+
 												"This work was made possible by The Spanish Ministry of Science and Innovation, "+
 												"<a href=\"http://www.integrants.es/index.php\">INTEGRANTS</a> program, a nation-wide "+
 												"grant program to give Spanish university graduates the opportunity of carrying out "+
-												"internships in companies in the U.S. and Canada, with partial support from the "+
+												"internships with organizations in the U.S. and Canada. Additional support provided by the "+
 												"<a HREF=\"http://cbc.amnh.org\">Center for Biodiversity and Conservation</a> at the "+
 												"<a HREF=\"http://amnh.org\">American Museum of Natural History</a>."+
 												"</BODY></HTML>";
