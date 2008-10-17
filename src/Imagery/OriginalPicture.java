@@ -199,7 +199,7 @@ java.awt.event.MouseMotionListener {
     		 this.cvSelectedPixels[e.getX()][e.getY()]=true;
     		 cvSDiagram.setSinglePoint(true);
       	 cvSDiagram.setSelectedPixels(this.cvSelectedPixels);
-      	 //
+      	 
       	 cvSDiagram.setHeight(this.getHeight());
       	 cvSDiagram.setWidth(this.getWidth());
       	 cvSelectedPixel=false;
@@ -240,7 +240,7 @@ java.awt.event.MouseMotionListener {
     	  int lvFirsty=cvPolygon.npoints>0? cvPolygon.ypoints[cvPolygon.npoints-1] :0;
     	  
     	  Graphics g  = this.getGraphics();
-     	 	g.setColor(Color.BLACK);
+     	 	g.setColor(Color.YELLOW);
      	 	g.drawLine(lvFirstx, lvFirsty, lvLastx, lvLasty);
      	 
      	 	releasedPen();
@@ -294,7 +294,7 @@ java.awt.event.MouseMotionListener {
     	int [][] pictureBandX = new int[w][h];
     	int [][] pictureBandY = new int[w][h];
 
-    	// This creates an RGBA colormodel... I think.
+    	// This creates an RGBA colormodel
     	colormodel = new DirectColorModel(32, 0xff000000, 0xff0000, 0xff00, 0xff);
 
     	//Fill in the array pixel
@@ -329,6 +329,7 @@ java.awt.event.MouseMotionListener {
     	BufferedImage image = new BufferedImage(colormodel, raster, false, null);
     	g2.drawImage(image,0,0,this);
     	//Drawing the polygon the user drew.
+    	g2.setColor(Color.YELLOW);
     	g2.drawPolygon(this.cvPolygon);
     	//Drawing the clicked point in case we are in the clicking mode
     	if(cvClicking && cvPolygon.npoints>0)
@@ -343,7 +344,7 @@ java.awt.event.MouseMotionListener {
     				if(cvSelectedPixelsSD[pictureBandX[lvRows][lvColumns]][pictureBandY[lvRows][lvColumns]])
     					{
     						g.setColor(Color.YELLOW);
-    						g.fillOval(lvRows-2,  lvColumns-2, 4, 4); /// OJOJOJOJOJOJO estaba al reves
+    						g.fillOval(lvRows-2,  lvColumns-2, 4, 4); 
     					}	
     	
     	//Setting up the Scatter diagram,  with the two bands
@@ -372,10 +373,6 @@ java.awt.event.MouseMotionListener {
           g.drawLine(cvPrevx,cvPrevy,cvMousex,cvMousey);
        }
 
-       /*
-         Make sure that the mouse has actually
-         moved from its previous position.
-       */
        if (mouseHasMoved(e))
        {
           /*
@@ -389,6 +386,7 @@ java.awt.event.MouseMotionListener {
              draw a line from the previous mouse coordinates
              to the current mouse coordinates
           */
+          g.setColor(Color.YELLOW);
           g.drawLine(cvPrevx,cvPrevy,cvMousex,cvMousey);
 
           /*
@@ -408,7 +406,6 @@ java.awt.event.MouseMotionListener {
        cvMousey   = e.getY();
        cvPrevx    = e.getX();
        cvPrevy    = e.getY();
-      
     }
 
 

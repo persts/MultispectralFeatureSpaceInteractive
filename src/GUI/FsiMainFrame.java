@@ -45,13 +45,15 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
  	ScatterDiagram cvScatterDiagram= new ScatterDiagram();
 	public OriginalPicture cvOpic= new OriginalPicture(cvScatterDiagram, cvJCheckBoxWholeImage);
 	
+	GraphicalEnvironment cvApplet;
   
   /**
    * Build the main window
    */
 
-  public FsiMainFrame() 
+  public FsiMainFrame(GraphicalEnvironment theApplet) 
   {
+  	cvApplet = theApplet;
   	try {
   		String lvLookAndFeel = UIManager.getSystemLookAndFeelClassName();
   		//GTK is broken on linux right now so let's default to something else
@@ -148,7 +150,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
    	JPanel lvJPanelYSelection = new JPanel();
    	
 		//We have to show the bands in the combo boxes
-  	//TODO: need to make sure cvOpic has real data
   	vcBandList = this.cvOpic.getBands();
 	  cvJComboBoxX= new JComboBox(vcBandList); 
 	  cvJComboBoxY= new JComboBox(vcBandList);
@@ -250,7 +251,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	cvJCheckBoxClassify.addItemListener(this);
   	cvJCheckBoxClassify.setBackground(Color.LIGHT_GRAY);
 	  cvJCheckBoxClassify.addItemListener(this);
-	  //cvJCheckBoxClassify.setHorizontalAlignment(SwingConstants.RIGHT);
 	  lvConstraints.fill = GridBagConstraints.HORIZONTAL;
 	  lvConstraints.anchor = GridBagConstraints.WEST;
 	  lvConstraints.gridwidth = 1;
@@ -489,7 +489,8 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   
   public void jMenuFileExit_actionPerformed(ActionEvent e) 
   {
-    System.exit(0);
+  	cvApplet.close();
+    //System.exit(0);
   }
   
   public void jMenuBandsSelection_actionPerformed(ActionEvent evt)

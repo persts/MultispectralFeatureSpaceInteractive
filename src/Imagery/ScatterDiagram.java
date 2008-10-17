@@ -358,8 +358,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
       
       //Drawing the polygon the user draw
       
-      //g2.setStroke(new BasicStroke(2));
-      g2.setColor(Color.RED);
+      g2.setColor(Color.BLACK);
       g2.drawPolygon(this.cvPolygon);
       
       if(cvClicking && cvPolygon.npoints>0)
@@ -556,9 +555,9 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 
 		 public void penOperation(MouseEvent e) 
 	    {
-	       Graphics g  = this.getGraphics();
+	       Graphics2D g  = (Graphics2D)this.getGraphics();
 	       
-	       g.setColor(Color.RED);
+	       g.setColor(Color.BLACK);
 					
 	      
 	       /*
