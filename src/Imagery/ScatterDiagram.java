@@ -263,6 +263,8 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
     	
     	//Outer rectangle      
       g2.drawRect(15,0,255,255);
+      g2.setColor(Color.LIGHT_GRAY);
+      g2.fillRect(15,0,255,255);
       g2.drawString("0",15,270);
       g2.drawString("255",248,270);
       //Y Axis
@@ -351,14 +353,14 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
       
      	if(lvTheCrossX!=-1)
     	{
-    		g2.setColor(Color.RED);
+    		g2.setColor(Color.WHITE);
     		g2.drawLine(lvTheCrossX+15-5, 255-lvTheCrossY, lvTheCrossX+20, 255-lvTheCrossY);
     		g2.drawLine(lvTheCrossX+15, 255-lvTheCrossY-5, lvTheCrossX+15, 255-lvTheCrossY+5);
     	}
       
       //Drawing the polygon the user draw
       
-      g2.setColor(Color.BLACK);
+      g2.setColor(Color.WHITE);
       g2.drawPolygon(this.cvPolygon);
       
       if(cvClicking && cvPolygon.npoints>0)
@@ -523,7 +525,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
     	  int lvFirsty=cvPolygon.npoints>0? cvPolygon.ypoints[cvPolygon.npoints-1] :0;
     	  
     	  Graphics g  = this.getGraphics();
-     	 	g.setColor(Color.BLACK);
+     	 	g.setColor(Color.WHITE);
      	 	g.drawLine(lvFirstx, lvFirsty, lvLastx, lvLasty);
      	 
      	 	releasedPen();
@@ -557,7 +559,7 @@ public class ScatterDiagram extends JComponent implements java.awt.event.MouseLi
 	    {
 	       Graphics2D g  = (Graphics2D)this.getGraphics();
 	       
-	       g.setColor(Color.BLACK);
+	       g.setColor(Color.WHITE);
 					
 	      
 	       /*

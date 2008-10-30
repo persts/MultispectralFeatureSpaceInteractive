@@ -44,16 +44,13 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
  	
  	ScatterDiagram cvScatterDiagram= new ScatterDiagram();
 	public OriginalPicture cvOpic= new OriginalPicture(cvScatterDiagram, cvJCheckBoxWholeImage);
-	
-	GraphicalEnvironment cvApplet;
   
   /**
    * Build the main window
    */
 
-  public FsiMainFrame(GraphicalEnvironment theApplet) 
+  public FsiMainFrame() 
   {
-  	cvApplet = theApplet;
   	try {
   		String lvLookAndFeel = UIManager.getSystemLookAndFeelClassName();
   		//GTK is broken on linux right now so let's default to something else
@@ -489,7 +486,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   
   public void jMenuFileExit_actionPerformed(ActionEvent e) 
   {
-  	cvApplet.close();
+  	this.dispose();
     //System.exit(0);
   }
   
