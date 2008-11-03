@@ -1,3 +1,24 @@
+/*
+** File: FsiRGBandSelectionFrame.java
+** Author(s): Roberto Garcia Yunta
+** Creation Date: 2008-09-05
+** Copyright (c) 2008, American Museum of Natural History. All rights reserved.
+** 
+** This library/program is free software; you can redistribute it 
+** and/or modify it under the terms of the GNU Library General Public
+** License as published by the Free Software Foundation; either
+** version 2 of the License, or (at your option) any later version.
+** 
+** This library/program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Library General Public License for more details.
+**
+** This work was made possible through the support from the 
+** Center For Biodiversity and Conservation and The Spanish Ministry of 
+** Science and Innovation's INTEGRANTS program.
+**
+**/
 package GUI;
 
 import java.awt.*;
@@ -47,18 +68,19 @@ public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener
     }
   }
 
+  /**
+   * Initial operations to set the frame 
+   */
   private void init() throws Exception  
   {
     this.setTitle("Select band for each axis");
     insetsPanel1.setLayout(new GridBagLayout());
   	GridBagConstraints lvConstraints = new GridBagConstraints();
   
-    //insetsPanel1.setLayout(flowLayout1);
     JPanel lvBandSelection = new JPanel();
    	lvBandSelection.setLayout(new GridLayout(3,3));
    	
    	lvBandSelection.setBorder(new TitledBorder("Band Selection"));
-   	//lvBandSelection.setBounds(575, 50, 200, 100);
    	lvBandSelection.add(new JLabel("Red"));
    	
    	cvXAxis=parent.cvOpic.getBands();
@@ -105,6 +127,9 @@ public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener
     cvBlueComboBox.setSelectedIndex(parent.cvOpic.getBlueBand());
   }
 
+  /**
+   * Handles a WindowEvent
+   */
   protected void processWindowEvent(WindowEvent e) 
   {
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -113,11 +138,17 @@ public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener
     super.processWindowEvent(e);
   }
 
+  /**
+   * Closes the window
+   */
   void cancel() 
   {
     dispose();
   }
 
+  /**
+   * Event handler for the different buttons and combo boxes
+   */
   public void actionPerformed(ActionEvent e) 
   {
 	  Object obj = e.getSource();

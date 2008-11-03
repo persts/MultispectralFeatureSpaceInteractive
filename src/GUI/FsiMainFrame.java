@@ -1,3 +1,24 @@
+/*
+** File: FsiMainFrame.java
+** Author(s): Roberto Garcia Yunta
+** Creation Date: 2008-10-17
+** Copyright (c) 2008, American Museum of Natural History. All rights reserved.
+** 
+** This library/program is free software; you can redistribute it 
+** and/or modify it under the terms of the GNU Library General Public
+** License as published by the Free Software Foundation; either
+** version 2 of the License, or (at your option) any later version.
+** 
+** This library/program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Library General Public License for more details.
+**
+** This work was made possible through the support from the 
+** Center For Biodiversity and Conservation and The Spanish Ministry of 
+** Science and Innovation's INTEGRANTS program.
+**
+**/
 package GUI;
 
 import java.awt.*;
@@ -44,6 +65,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
  	
  	ScatterDiagram cvScatterDiagram= new ScatterDiagram();
 	public OriginalPicture cvOpic= new OriginalPicture(cvScatterDiagram, cvJCheckBoxWholeImage);
+
   
   /**
    * Build the main window
@@ -340,7 +362,12 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  lvJPanelSelectionAlgorithm.add(lvJPanelParallelepiped, lvConstraints);
 	  	
   }
-
+  
+  /**
+   * Actions performed by the different buttons on the fram
+   * @param evt
+   * @see ActionEvent
+   */
   public void actionPerformed(ActionEvent evt) {
       Object obj = evt.getSource();
       
@@ -378,6 +405,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
       }
   }
 
+  /**
+   * Actions performed when some components change the state
+   * @param evt
+   * @see ChangeEvent
+   */
   public void stateChanged(ChangeEvent evt) 
 	{
 	  Object obj = evt.getSource();
@@ -395,11 +427,20 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  }
 	}
   
+  /**
+   * Resets the polygon, the number of points it contains after this operation is 0
+   * @return A ScatterDiagram object
+   */
   public ScatterDiagram getScatterDiagram()
   {
   	return this.cvScatterDiagram;
   }
   
+  /**
+   * Actions performed when some components change the state
+   * @param evt
+   * @see ChangeEvent
+   */
   public void itemStateChanged(ItemEvent e)
   {
 	  Object obj = e.getSource();
@@ -422,6 +463,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  }
   }
   
+  /**
+   * Event handler for jCheckBoxClassify
+   * @param e
+   * @see ItemEvent
+   */
   void jCheckBoxClassify_mouseClicked(ItemEvent e)
   {
 	  if(cvJCheckBoxClassify.isSelected())
@@ -450,6 +496,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  }
   }
   
+  /**
+   * Event handler for jCheckBoxWholeImage
+   * @param e
+   * @see ItemEvent
+   */
   void jCheckBoxWholeImage_mouseClicked(ItemEvent e)
   {
 	  if (cvJCheckBoxWholeImage.isSelected())
@@ -470,6 +521,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  } 
   }
 
+  /**
+   * Event handler for jComboBoxX
+   * @param e
+   * @see ItemEvent
+   */
   void jComboBoxX_mouseClicked(ItemEvent e) 
   {
   	this.cvScatterDiagram.setBandX(cvJComboBoxX.getSelectedIndex());
@@ -477,6 +533,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	this.cvOpic.repaint(); 
   }
   
+  /**
+   * Event handler for jComboBoxY
+   * @param e
+   * @see ItemEvent
+   */
   void jComboBoxY_mouseClicked(ItemEvent e) 
   {  
   	this.cvScatterDiagram.setBandY(cvJComboBoxY.getSelectedIndex());
@@ -484,12 +545,22 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	this.cvOpic.repaint();
   }
   
+  /**
+   * Event handler form jMenuFileExit
+   * @param e
+   * @see ItemEvent
+   */
   public void jMenuFileExit_actionPerformed(ActionEvent e) 
   {
   	this.dispose();
     //System.exit(0);
   }
   
+  /**
+   * Event handler for jMenuBandsSelection
+   * @param evt
+   * @see ItemEvent
+   */
   public void jMenuBandsSelection_actionPerformed(ActionEvent evt)
   {
 	  FsiRGBBandSelectionFrame frmSel = new FsiRGBBandSelectionFrame(this);
@@ -502,6 +573,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
 	  frmSel.setVisible(true);
   }
 
+  /**
+   * Event handler for jMenuHelpAbout
+   * @param e
+   * @see ItemEvent
+   */
   public void jMenuHelpAbout_actionPerformed(ActionEvent e) 
   {
   	FsiAboutFrame dlg = new FsiAboutFrame(this, version);
@@ -514,6 +590,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     dlg.setVisible(true);
   }
   
+  /**
+   * Event handler for a WindowEvent
+   * @param e
+   * @see WindowEvent
+   */
   protected void processWindowEvent(WindowEvent e) 
   {
     super.processWindowEvent(e);
@@ -523,6 +604,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     }
   }
 
+  /**
+   * Event handler for jRadioButtonPS
+   * @param e
+   * @see ActionEvent
+   */
   void jRadioButtonPS_ActionPerformed(ActionEvent e)
   {
   	if (cvJRadioButtonPS.isSelected())
@@ -533,7 +619,12 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	  cvJRadioButtonDrag.setSelected(false); 
   	}
   }
-  	 	
+  	
+  /**
+   * Event handler for jRadioButtonDrag
+   * @param e
+   * @see ActionEvent
+   */
   void jRadioButtonDrag_ActionPerformed(ActionEvent e)
   {
   	if (cvJRadioButtonDrag.isSelected())
@@ -544,6 +635,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	}
   }
   
+  /**
+   * Event handler for jRadioButtonParallel
+   * @param e
+   * @see ActionEvent
+   */
   void jRadioButtonParallel_ActionPerformed(ActionEvent e)
   {
   	if(cvJRadioButtonParallel.isSelected())
@@ -555,6 +651,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	}
   }
   
+  /**
+   * Event handler for jRadioButtonMaxLike
+   * @param e
+   * @see ActionEvent
+   */
   void jRadioButtonMaxLike_ActionPerformed (ActionEvent e)
   {
   	if(cvJRadioButtonMaxLike.isSelected())
@@ -566,6 +667,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	}
   }
   
+  /**
+   * Event handler for jRadioButtonMinDist
+   * @param e
+   * @see ActionEvent
+   */
   void jRadioButtonMinDist_ActionPerformed(ActionEvent e)
   {
   	if(cvJRadioButtonMinDist.isSelected())
@@ -578,6 +684,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	}
   }
 
+  /**
+   * Event handler for jSpinnerDistanceMean
+   * @param e
+   * @see ChangeEvent
+   */
   void jSpinnerDistanceMean_ActionPerformed(ChangeEvent e)
   {
   	cvScatterDiagram.setRadium(Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString()));
@@ -586,12 +697,22 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	cvScatterDiagram.repaint();
   }
   
+  /**
+   * Event handler for jSpinnerRectangleSize
+   * @param e
+   * @see ChangeEvent
+   */
   void jSpinnerRectangleSize_ActionPerformed(ChangeEvent e)
   {
   	cvScatterDiagram.setRectangleSize(Integer.parseInt(cvJSpinnerRectangleSize.getValue().toString()));
   	cvScatterDiagram.repaint();
   }
 
+  /**
+   * Event handler for jSpinnerDistanceSD
+   * @param e
+   * @see ChangeEvent
+   */
   void jSpinnerDistanceSD_ActionPerformed(ChangeEvent e)
   {
   	cvScatterDiagram.setDistanceSD(Integer.parseInt(cvJSpinnerDistanceSD.getValue().toString()));
