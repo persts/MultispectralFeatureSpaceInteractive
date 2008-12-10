@@ -103,7 +103,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   	//Min width is basically the size of the scatter plot and original image
     this.setMinimumSize(new Dimension(550,550));
     
-    this.setTitle("Feature Space Interactive");
+    this.setTitle("Multispectral Feature Space Interactive");
     cvStatusBar.setBorder(BorderFactory.createEtchedBorder());
     cvStatusBar.setText("amnh");
     

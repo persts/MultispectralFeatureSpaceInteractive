@@ -36,7 +36,7 @@ public class FsiAboutFrame extends JDialog implements HyperlinkListener
   public FsiAboutFrame(FsiMainFrame parent, String version) 
   {
   	String messageText = "<HTML><BODY>"+
-												"Version "+ version +" of the Feature Space Interactive<br>"+
+												"Version "+ version +" of the Multispectral Feature Space Interactive<br>"+
 												"Written by Roberto Garcia-Yunta with contributions from Peter J. Ersts.<br>"+
 												"Feature Space concept by Ned Horning.<br><br>"+
 												"This application implements Eric Albert's BrowserLauncher class, which is known not to work on many linux systems.<br><br>"+
