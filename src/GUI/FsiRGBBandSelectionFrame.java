@@ -73,7 +73,7 @@ public class FsiRGBBandSelectionFrame extends JDialog implements ActionListener
    */
   private void init() throws Exception  
   {
-    this.setTitle("Select band for each axis");
+    this.setTitle("Select bands");
     insetsPanel1.setLayout(new GridBagLayout());
   	GridBagConstraints lvConstraints = new GridBagConstraints();
   

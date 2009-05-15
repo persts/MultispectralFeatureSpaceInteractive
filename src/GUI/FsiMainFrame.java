@@ -47,7 +47,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   JMenuItem cvJMenuBandsSelection = new JMenuItem();
   JMenu cvJMenuHelp = new JMenu();
   JMenuItem cvJMenuHelpAbout = new JMenuItem();
-  JLabel cvStatusBar = new JLabel();
+
   JSplitPane cvJSplitPane1 = new JSplitPane();
   TitledBorder cvTitledBorder1;
   JPanel cvJPanel3 = new JPanel();
@@ -104,8 +104,6 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     this.setMinimumSize(new Dimension(550,550));
     
     this.setTitle("Multispectral Feature Space Interactive");
-    cvStatusBar.setBorder(BorderFactory.createEtchedBorder());
-    cvStatusBar.setText("amnh");
     
     cvJMenuFile.setText("File");
     
@@ -126,9 +124,8 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
     cvJMenuBar1.add(cvJMenuFile);
     cvJMenuBar1.add(cvJMenuHelp);
     this.setJMenuBar(cvJMenuBar1);
-  
-    this.getContentPane().add(cvStatusBar, BorderLayout.SOUTH);
-    JPanel lvCenterPanel = new JPanel(); //This panel basically hold of the components
+
+    JPanel lvCenterPanel = new JPanel(); //This panel basically holds the components
     this.getContentPane().add(lvCenterPanel,  BorderLayout.CENTER);
     
     
@@ -613,11 +610,11 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   {
   	if (cvJRadioButtonPS.isSelected())
   	{
-  		
   		this.cvScatterDiagram.setClicking();
   	  cvOpic.setClicking();
-  	  cvJRadioButtonDrag.setSelected(false); 
+  	  cvJRadioButtonDrag.setSelected(false);
   	}
+  	else{ cvJRadioButtonPS.setSelected(true); }
   }
   	
   /**
@@ -633,6 +630,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   		cvOpic.setDragging();
   	  cvJRadioButtonPS.setSelected(false);
   	}
+  	else{ cvJRadioButtonDrag.setSelected(true); }
   }
   
   /**
