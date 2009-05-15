@@ -647,6 +647,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   		this.cvScatterDiagram.setAlgorithm(3);
   		cvScatterDiagram.repaint();
   	}
+  	else{ cvJRadioButtonParallel.setSelected(true); }
   }
   
   /**
@@ -663,6 +664,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   		this.cvScatterDiagram.setAlgorithm(2);
   		cvScatterDiagram.repaint();
   	}
+  	else{ cvJRadioButtonMaxLike.setSelected(true); }
   }
   
   /**
@@ -680,6 +682,7 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   		cvScatterDiagram.setRadium(Integer.parseInt(cvJSpinnerDistanceMean.getValue().toString()));
   		cvScatterDiagram.repaint();
   	}
+  	else{ cvJRadioButtonMinDist.setSelected(true); }
   }
 
   /**
