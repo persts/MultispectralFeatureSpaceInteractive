@@ -50,13 +50,13 @@ public class FsiAboutFrame extends JDialog implements HyperlinkListener
 												"<a HREF=\"http://cbc.amnh.org\">Center for Biodiversity and Conservation</a> at the "+
 												"<a HREF=\"http://amnh.org\">American Museum of Natural History</a>."+
 												"</BODY></HTML>";
-		setSize(435,600);
-		setTitle("About");
+		setSize(600,400);
+  	setTitle("About");
 		
 		getContentPane().setBackground(Color.WHITE);
 		setBackground(new Color(255,255,255));
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setLocation((int)parent.getLocationOnScreen().getX() + (parent.getWidth()/2) - (getWidth()/2), (int)parent.getLocationOnScreen().getY() + (parent.getHeight()/2) - (getHeight()/2));
+		//setLocation((int)parent.getLocationOnScreen().getX() + (parent.getWidth()/2) - (getWidth()/2), (int)parent.getLocationOnScreen().getY() + (parent.getHeight()/2) - (getHeight()/2));
 		
 		JEditorPane text = new JEditorPane();
 		text.setContentType("text/html");

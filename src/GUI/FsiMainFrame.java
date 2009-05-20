@@ -578,13 +578,13 @@ public class FsiMainFrame extends JFrame implements ActionListener, ChangeListen
   public void jMenuHelpAbout_actionPerformed(ActionEvent e) 
   {
   	FsiAboutFrame dlg = new FsiAboutFrame(this, version);
-    Dimension dlgSize = dlg.getPreferredSize();
+    Dimension dlgSize = dlg.getSize();
     Dimension frmSize = getSize();
     Point loc = getLocation();
     dlg.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
-    dlg.setModal(true);
-    dlg.pack();
-    dlg.setVisible(true);
+    //dlg.setModal(true);
+    //dlg.pack();
+    //dlg.setVisible(true);
   }
   
   /**
