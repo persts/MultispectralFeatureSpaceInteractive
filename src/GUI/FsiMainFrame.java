@@ -34,7 +34,7 @@ import Imagery.*;
 public class FsiMainFrame extends JFrame implements ActionListener, ChangeListener, ItemListener
 {
 	/* Current Version Number */
-	private static final String version = "1.0.0";
+	private static final String version = "1.1.0";
 	
 	String vcBandList[];
 	

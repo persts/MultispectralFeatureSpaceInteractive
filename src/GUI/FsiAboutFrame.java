@@ -26,7 +26,6 @@ import java.io.IOException;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import edu.stanford.ejalbert.BrowserLauncher;
 
 
 
@@ -39,18 +38,14 @@ public class FsiAboutFrame extends JDialog implements HyperlinkListener
 												"Version "+ version +" of the Multispectral Feature Space Interactive<br>"+
 												"Written by Roberto Garcia-Yunta with contributions from Peter J. Ersts.<br>"+
 												"Feature Space concept by Ned Horning.<br><br>"+
-												"This application implements Eric Albert's BrowserLauncher class, which is known not to work on many linux systems.<br><br>"+
-												"Questions, comments, and bug reports can be submitted at: <BR>"+
-												"<a href=\"http://biodiversityinformatics.amnh.org/content.php?content=contact_us\">"+
-												"http://biodiversityinformatics.amnh.org/content.php?content=contact_us</a><br><br>"+
 												"This work was made possible by The Spanish Ministry of Science and Innovation, "+
-												"<a href=\"http://www.integrants.es/index.php\">INTEGRANTS</a> program, a nation-wide "+
+												"INTEGRANTS program, a nation-wide "+
 												"grant program to give Spanish university graduates the opportunity of carrying out "+
 												"internships with organizations in the U.S. and Canada. Additional support provided by the "+
 												"<a HREF=\"http://cbc.amnh.org\">Center for Biodiversity and Conservation</a> at the "+
 												"<a HREF=\"http://amnh.org\">American Museum of Natural History</a>."+
 												"</BODY></HTML>";
-		setSize(600,400);
+		setSize(600,300);
   	setTitle("About");
 		
 		getContentPane().setBackground(Color.WHITE);
@@ -86,9 +81,11 @@ public class FsiAboutFrame extends JDialog implements HyperlinkListener
 		{
 			try 
 			{
-				BrowserLauncher.openURL(evt.getURL().toString());
+				if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+					Desktop.getDesktop().browse(evt.getURL().toURI());
+				}
 			}
-			catch (IOException e) {}
+			catch (Exception e) {}
 		}
 	}
 
