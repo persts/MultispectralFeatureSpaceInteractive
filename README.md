@@ -1,4 +1,4 @@
-## Multispectral Feature Space Interactive
+# Multispectral Feature Space Interactive
 
 The feature space interactive is designed to teach basic concepts about what feature space is and how it
 is used in image classification. When we use the term “feature” in the context of “feature space” we refer
@@ -18,3 +18,6 @@ space can have several dimensions, one dimension for each feature. In other word
 a 7 band image the algorithm will be working in 7-dimensional feature space.
 
 ![Screen Shot](/img/screenshot.jpg)
+
+## Download the Interactive
+A pre built [JAR](https://github.com/persts/MultispectralFeatureSpaceInteractive/blob/master/jar/FSI.jar) file is available in the jar folder.
