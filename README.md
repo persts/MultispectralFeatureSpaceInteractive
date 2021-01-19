@@ -1,4 +1,5 @@
-##Multispectral Feature Space Interactive
+## Multispectral Feature Space Interactive
+
 The feature space interactive is designed to teach basic concepts about what feature space is and how it
 is used in image classification. When we use the term “feature” in the context of “feature space” we refer
 to data layers that comprise a data set. When the data set is a multispectral image the features are the
